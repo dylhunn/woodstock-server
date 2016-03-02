@@ -2,6 +2,7 @@ package controllers;
 
 import play.*;
 import play.mvc.*;
+import harmony.core.Harmonizer;
 
 import views.html.*;
 

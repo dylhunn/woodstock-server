@@ -12,11 +12,11 @@ function drawMusic() {
     ["G4", "F4", "F4", "G4", "G4", "F4", "F4", "G4", "F4", "G4", "G4", "F4", "F4", "G4", "G4", "F4", "F4", "G4", "F4", "G4"], ["C4", "B3", "B3", "C4", "C4", "B3", "B3", "C4", "B3", "C4", "C4", "B3", "B3", "C4", "C4", "B3", "B3", "C4", "B3", "C4"],
     ["C3", "D3", "D3", "C3", "C3", "D3", "D3", "C3", "D3", "C3", "C3", "D3", "D3", "C3", "C3", "D3", "D3", "C3", "D3", "C3"]);
   var chordsPerLine = numberOfChordsPerLine();
-  console.log(chordsPerLine + " chords per line");
-  console.log(staveNotes[0].length + " total chords");
+  //console.log(chordsPerLine + " chords per line");
+  //console.log(staveNotes[0].length + " total chords");
   
   var numSystems = Math.ceil(staveNotes[0].length / chordsPerLine);
-  console.log("Expanding div to fit " + numSystems + " systems");
+  //console.log("Expanding div to fit " + numSystems + " systems");
 
   // Clear and correctly size renderer
   var canvas = $("div.container div.jumbotron canvas")[0];
