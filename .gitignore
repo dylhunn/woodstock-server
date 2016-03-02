@@ -9,3 +9,4 @@ target
 project/project
 project/target
 tmp
+.DS_STORE
