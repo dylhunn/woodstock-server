@@ -8,6 +8,7 @@ GET     /                           controllers.Assets.at(path="/public", file="
 GET     /index.html                           controllers.Assets.at(path="/public", file="index.html")
 GET     /about.html                           controllers.Assets.at(path="/public", file="about.html")
 GET     /contact.html                           controllers.Assets.at(path="/public", file="contact.html")
+GET     /harmonize/*progression     controllers.Application.harmonize(progression :String)
 
 
 # Map static resources from the /public folder to the /assets URL path
