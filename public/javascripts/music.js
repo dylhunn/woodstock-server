@@ -39,7 +39,7 @@ function initiateHarmonyRequest(progression) {
 }
 
 function completeHarmonyRequest(response) {
-  try {
+  //try {
     if (httpRequest.readyState === XMLHttpRequest.DONE) {
       if (httpRequest.status === 200) {
         staveNotes = transformFromChordsToMelodies(response);
@@ -55,13 +55,13 @@ function completeHarmonyRequest(response) {
         showError();
       }
     }
-  }
-  catch( e ) {
+  //}
+  /*catch( e ) {
     var erromsg = "<strong>Unexpected Error:</strong> " + e.description;
-    $("#errormsg").html("<strong>Unexpected Error:</strong> " + e.description);
+    $("#errormsg").html("<strong>Unexpected Error:</strong> " + e.description + e);
    hideMusicArea();
    showError();
-  }
+  }*/
 }
 
 // Accept an array of arrays, each of which lists chord tones. Outer array is ordered. Inner array is SATB.
