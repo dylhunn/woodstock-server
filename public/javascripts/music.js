@@ -2,15 +2,82 @@ var marginOffset = 10; // extra space around staves
 var staffSystemHeight = 240;
 var spaceBetweenChords = 500;
 
+var staveNotes = [[]]; // cached staveNote data
+var httpRequest;
+
 function showMusicArea() {
   $('#musicdiv').show();
 }
 
+function hideMusicArea() {
+  $('#musicdiv').hide();
+}
+
+function showError() {
+  $('#errormsg').show()
+}
+
+function requestAndDraw() {
+  staveNotes = initiateHarmonyRequest(document.getElementById("inputlg").value);
+  // The callback will automatically redraw the music.
+}
+
+// Accepts a space-separated progression string as a parameter
+function initiateHarmonyRequest(progression) {
+  var requestData = encodeURIComponent(progression.trim());
+
+  httpRequest = new XMLHttpRequest();
+
+  if (!httpRequest) {
+    console.log('Cannot create an XMLHTTP instance');
+    return false;
+  }
+  httpRequest.onreadystatechange = completeHarmonyRequest;
+  var url = "http://woodstock-server.herokuapp.com/harmonize/" + requestData;
+  httpRequest.open('GET', url);
+  httpRequest.send();
+}
+
+function completeHarmonyRequest(response) {
+  try {
+    if (httpRequest.readyState === XMLHttpRequest.DONE) {
+      if (httpRequest.status === 200) {
+        staveNotes = transformFromChordsToMelodies(response);
+        showMusicArea();
+        drawMusic();
+      } else {
+        var undefinedWarning = "";
+        if (!httpRequest.response) {
+          undefinedWarning = "the server returned no response."
+        }
+        $("#errormsg").html("<strong>Error</strong> (" + httpRequest.status.toString() + "): " + httpRequest.response + undefinedWarning);
+        hideMusicArea();
+        showError();
+      }
+    }
+  }
+  catch( e ) {
+    var erromsg = "<strong>Unexpected Error:</strong> " + e.description;
+    $("#errormsg").html("<strong>Unexpected Error:</strong> " + e.description);
+   hideMusicArea();
+   showError();
+  }
+}
+
+// Accept an array of arrays, each of which lists chord tones. Outer array is ordered. Inner array is SATB.
+// Return an array of arrays, each of which lists voice tones, in order. Outer array is SATB.
+function transformFromChordsToMelodies(progression) {
+  var newArray = progression[0].map(function(col, i) {
+    return progression.map(function(row) {
+      return row[i]
+    })
+  });
+
+  return(newArray);
+}
+
 function drawMusic() {
-  // All four parts muct have the same number of notes!
-  var staveNotes = generateStaveNotes(["C#5", "Dbb5", "DX5", "C5", "C5", "B5", "DX5", "C5", "DX5", "C5", "C#5", "Dbb5", "DX5", "C5", "C5", "B5", "DX5", "C5", "DX5", "C5"],
-    ["G4", "F4", "F4", "G4", "G4", "F4", "F4", "G4", "F4", "G4", "G4", "F4", "F4", "G4", "G4", "F4", "F4", "G4", "F4", "G4"], ["C4", "B3", "B3", "C4", "C4", "B3", "B3", "C4", "B3", "C4", "C4", "B3", "B3", "C4", "C4", "B3", "B3", "C4", "B3", "C4"],
-    ["C3", "D3", "D3", "C3", "C3", "D3", "D3", "C3", "D3", "C3", "C3", "D3", "D3", "C3", "C3", "D3", "D3", "C3", "D3", "C3"]);
+  // All four parts must have the same number of notes!
   var chordsPerLine = numberOfChordsPerLine();
   //console.log(chordsPerLine + " chords per line");
   //console.log(staveNotes[0].length + " total chords");
