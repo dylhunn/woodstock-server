@@ -10,3 +10,9 @@ project/project
 project/target
 tmp
 .DS_STORE
+.target/
+.cache
+bin/
+.sbtserver
+project/.sbtserver
+

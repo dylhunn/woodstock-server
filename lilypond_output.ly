@@ -1,0 +1,1 @@
+\new GrandStaff << \new Staff { \absolute { <e' c''> <f' c''>  } } \new Staff { \clef "bass" \absolute { <c g> <f, a>  } } >> }  \version "2.18.2"
