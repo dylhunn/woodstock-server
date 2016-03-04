@@ -15,4 +15,5 @@ tmp
 bin/
 .sbtserver
 project/.sbtserver
-
+.ly
+.pdf
