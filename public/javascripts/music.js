@@ -17,51 +17,66 @@ function showError() {
   $('#errormsg').show()
 }
 
+function hideError() {
+  $('#errormsg').hide()
+}
+
 function requestAndDraw() {
-  staveNotes = initiateHarmonyRequest(document.getElementById("inputlg").value);
-  // The callback will automatically redraw the music.
-}
-
-// Accepts a space-separated progression string as a parameter
-function initiateHarmonyRequest(progression) {
-  var requestData = encodeURIComponent(progression.trim());
-
-  httpRequest = new XMLHttpRequest();
-
-  if (!httpRequest) {
-    console.log('Cannot create an XMLHTTP instance');
-    return false;
+  hideError();
+  var text = document.getElementById("inputlg").value;
+  if (!text) {
+    showError();
+    $("#errormsg").html("<strong>Error</strong>: you must specify a progression.");
+    return;
   }
-  httpRequest.onreadystatechange = completeHarmonyRequest;
-  var url = "http://woodstock-server.herokuapp.com/harmonize/" + requestData;
-  httpRequest.open('GET', url);
-  httpRequest.send();
+  staveNotes = initiateHarmonyRequest(text);
+  // The callback will automatically redraw the music.
+
+  // Accepts a space-separated progression string as a parameter
+  function initiateHarmonyRequest(progression) {
+    var requestData = encodeURIComponent(progression.trim());
+
+    httpRequest = new XMLHttpRequest();
+
+    if (!httpRequest) {
+      console.log('Cannot create an XMLHTTP instance');
+      return false;
+    }
+    httpRequest.onreadystatechange = completeHarmonyRequest;
+    var url = "/harmonize/" + requestData;
+    httpRequest.open('GET', url);
+    httpRequest.send();
+
+  }
 }
 
-function completeHarmonyRequest(response) {
+function completeHarmonyRequest() {
   //try {
-    if (httpRequest.readyState === XMLHttpRequest.DONE) {
-      if (httpRequest.status === 200) {
-        staveNotes = transformFromChordsToMelodies(response);
-        showMusicArea();
-        drawMusic();
-      } else {
-        var undefinedWarning = "";
-        if (!httpRequest.response) {
-          undefinedWarning = "the server returned no response."
-        }
-        $("#errormsg").html("<strong>Error</strong> (" + httpRequest.status.toString() + "): " + httpRequest.response + undefinedWarning);
-        hideMusicArea();
-        showError();
+  if (httpRequest.readyState === XMLHttpRequest.DONE) {
+    if (httpRequest.status === 200) {
+      console.log(httpRequest.response);
+      var melodies = transformFromChordsToMelodies(JSON.parse(httpRequest.response))
+      staveNotes = generateStaveNotes(melodies[0], melodies[1], melodies[2], melodies[3]);
+      console.log(staveNotes);
+      showMusicArea();
+      drawMusic();
+    } else {
+      var undefinedWarning = "";
+      if (!httpRequest.response) {
+        undefinedWarning = "the server returned no response."
       }
+      $("#errormsg").html("<strong>Error</strong> (" + httpRequest.status.toString() + "): " + httpRequest.response + undefinedWarning);
+      hideMusicArea();
+      showError();
     }
+  }
   //}
   /*catch( e ) {
-    var erromsg = "<strong>Unexpected Error:</strong> " + e.description;
-    $("#errormsg").html("<strong>Unexpected Error:</strong> " + e.description + e);
+   var erromsg = "<strong>Unexpected Error:</strong> " + e.description;
+   $("#errormsg").html("<strong>Unexpected Error:</strong> " + e.description + e);
    hideMusicArea();
    showError();
-  }*/
+   }*/
 }
 
 // Accept an array of arrays, each of which lists chord tones. Outer array is ordered. Inner array is SATB.
@@ -81,14 +96,14 @@ function drawMusic() {
   var chordsPerLine = numberOfChordsPerLine();
   //console.log(chordsPerLine + " chords per line");
   //console.log(staveNotes[0].length + " total chords");
-  
+
   var numSystems = Math.ceil(staveNotes[0].length / chordsPerLine);
   //console.log("Expanding div to fit " + numSystems + " systems");
 
   // Clear and correctly size renderer
   var canvas = $("div.container div.jumbotron canvas")[0];
   var renderer = new Vex.Flow.Renderer(canvas,
-    Vex.Flow.Renderer.Backends.CANVAS);
+      Vex.Flow.Renderer.Backends.CANVAS);
   var parentDivWidth = $("#musicdiv").width();
   spaceBetweenChords = parentDivWidth - 20;
   renderer.resize(parentDivWidth - 2*marginOffset, staffSystemHeight*numSystems); // Resize and clear canvas
@@ -102,7 +117,7 @@ function drawMusic() {
     currentSystemAlto = staveNotes[1].slice(startingChordIdx, endingChordIdx+1);
     currentSystemTenor = staveNotes[2].slice(startingChordIdx, endingChordIdx+1);
     currentSystemBass = staveNotes[3].slice(startingChordIdx, endingChordIdx+1);
-    console.log("Rendering chords between inclusive indices " + startingChordIdx + ", " + endingChordIdx);
+    //console.log("Rendering chords between inclusive indices " + startingChordIdx + ", " + endingChordIdx);
     renderVoices(currentSystemSoprano, currentSystemAlto, currentSystemTenor, currentSystemBass, staffIndex*staffSystemHeight);
 
     startingChordIdx = endingChordIdx + 1;
@@ -132,25 +147,25 @@ function generateStaveNotes(sopranoStrs, altoStrs, tenorStrs, bassStrs) {
 
   var snotes = sopranoStrs.map(function(val) {
     if (parseAccidental(val).length > 0) return new Vex.Flow.StaveNote({ keys: [buildVexPitchString(val)], duration: "q", stem_direction: 1 }).
-      addAccidental(0, new Vex.Flow.Accidental(parseAccidental(val)));
+    addAccidental(0, new Vex.Flow.Accidental(parseAccidental(val)));
     else return new Vex.Flow.StaveNote({ keys: [buildVexPitchString(val)], duration: "q", stem_direction: 1 });
   });
 
   var anotes = altoStrs.map(function(val) {
-    if (parseAccidental(val).length > 0) return new Vex.Flow.StaveNote({ keys: [buildVexPitchString(val)], duration: "q", stem_direction: 1 }).
-      addAccidental(0, new Vex.Flow.Accidental(parseAccidental(val)));
+    if (parseAccidental(val).length > 0) return new Vex.Flow.StaveNote({ keys: [buildVexPitchString(val)], duration: "q", stem_direction: -1 }).
+    addAccidental(0, new Vex.Flow.Accidental(parseAccidental(val)));
     else return new Vex.Flow.StaveNote({ keys: [buildVexPitchString(val)], duration: "q", stem_direction: -1 });
   });
 
   var tnotes = tenorStrs.map(function(val) {
-    if (parseAccidental(val).length > 0) return new Vex.Flow.StaveNote({ keys: [buildVexPitchString(val)], duration: "q", stem_direction: 1 }).
-      addAccidental(0, new Vex.Flow.Accidental(parseAccidental(val)));
+    if (parseAccidental(val).length > 0) return new Vex.Flow.StaveNote({ clef: "bass", keys: [buildVexPitchString(val)], duration: "q", stem_direction: 1 }).
+    addAccidental(0, new Vex.Flow.Accidental(parseAccidental(val)));
     else return new Vex.Flow.StaveNote({ clef: "bass", keys: [buildVexPitchString(val)], duration: "q", stem_direction: 1 });
   });
 
   var bnotes = bassStrs.map(function(val) {
-    if (parseAccidental(val).length > 0) return new Vex.Flow.StaveNote({ keys: [buildVexPitchString(val)], duration: "q", stem_direction: 1 }).
-      addAccidental(0, new Vex.Flow.Accidental(parseAccidental(val)));
+    if (parseAccidental(val).length > 0) return new Vex.Flow.StaveNote({ clef: "bass", keys: [buildVexPitchString(val)], duration: "q", stem_direction: -1 }).
+    addAccidental(0, new Vex.Flow.Accidental(parseAccidental(val)));
     else return new Vex.Flow.StaveNote({ clef: "bass", keys: [buildVexPitchString(val)], duration: "q", stem_direction: -1 });
   });
 
@@ -187,7 +202,7 @@ function generateStaveNotes(sopranoStrs, altoStrs, tenorStrs, bassStrs) {
 function renderVoices(sopranoSN, altoSN, tenorSN, bassSN, yPos) {
   var canvas = $("div.container div.jumbotron canvas")[0];
   var renderer = new Vex.Flow.Renderer(canvas,
-    Vex.Flow.Renderer.Backends.CANVAS);
+      Vex.Flow.Renderer.Backends.CANVAS);
 
   var parentDivWidth = $("#musicdiv").width();
 
@@ -205,12 +220,12 @@ function renderVoices(sopranoSN, altoSN, tenorSN, bassSN, yPos) {
       resolution: Vex.Flow.RESOLUTION
     });
   }
-
+  console.log(tenorSN);
   // Create voices and add notes to each of them.
   var sopranoV = create_voice(sopranoSN.length).addTickables(sopranoSN);
-  var altoV = create_voice(sopranoSN.length).addTickables(altoSN);
-  var tenorV = create_voice(sopranoSN.length).addTickables(tenorSN);
-  var bassV = create_voice(sopranoSN.length).addTickables(bassSN);
+  var altoV = create_voice(altoSN.length).addTickables(altoSN);
+  var tenorV = create_voice(tenorSN.length).addTickables(tenorSN);
+  var bassV = create_voice(bassSN.length).addTickables(bassSN);
 
   // Format and justify the notes
   var formatter = new Vex.Flow.Formatter().format([sopranoV, altoV, tenorV, bassV], spaceBetweenChords);
