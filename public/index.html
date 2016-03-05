@@ -63,6 +63,10 @@
 		</div>
 
 		<div class="jumbotron" id="musicdiv" style="display:none";>
+			<button type="button" id="playbtn" class="btn btn-success" onclick="playMusic();">Play</button>
+			<button type="button" id="stopbtn" class="btn btn-danger" disabled="true" onclick="stopMusic();">Stop</button>
+
+
 			<canvas width=1 height=1 id="musiccanvas"></canvas>
 		</div>
 
@@ -95,7 +99,10 @@
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/vexflow/vexflow-min.js"></script>
     <script src="assets/javascripts/music.js"></script>
-    <script src="assets/javascripts/resize_debounce.js"></script>
+	<script type="text/javascript" src="http://cdn.tonejs.org/latest/Tone.min.js"></script>
+	<script src="assets/javascripts/playback.js"></script>
+	<script src="assets/javascripts/resize_debounce.js"></script>
+
 
 </body>
 </html>

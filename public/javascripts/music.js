@@ -2,7 +2,8 @@ var marginOffset = 10; // extra space around staves
 var staffSystemHeight = 240;
 var spaceBetweenChords = 500;
 
-var staveNotes = [[]]; // cached staveNote data
+var chords = [[]]; // cached chord data, organized by chord
+var staveNotes = [[]]; // cached VexFlow staveNote data, organized by melody
 var httpRequest;
 
 function showMusicArea() {
@@ -13,8 +14,11 @@ function hideMusicArea() {
   $('#musicdiv').hide();
 }
 
-function showError() {
+// Parameter is optional; do not include "Error: "
+function showError(msg) {
   $('#errormsg').show()
+  msg = msg || "";
+  $("#errormsg").html("<strong>Error</strong>: " + msg);
 }
 
 function hideError() {
@@ -25,11 +29,11 @@ function requestAndDraw() {
   hideError();
   var text = document.getElementById("inputlg").value;
   if (!text) {
-    showError();
-    $("#errormsg").html("<strong>Error</strong>: you must specify a progression.");
+    showError("you must specify a progression.");
+    hideMusicArea();
     return;
   }
-  staveNotes = initiateHarmonyRequest(text);
+  initiateHarmonyRequest(text);
   // The callback will automatically redraw the music.
 
   // Accepts a space-separated progression string as a parameter
@@ -46,39 +50,35 @@ function requestAndDraw() {
     var url = "/harmonize/" + requestData;
     httpRequest.open('GET', url);
     httpRequest.send();
-
   }
 }
 
 function completeHarmonyRequest() {
-  //try {
-  if (httpRequest.readyState === XMLHttpRequest.DONE) {
-    if (httpRequest.status === 200) {
-      console.log(httpRequest.response);
-      var melodies = transformFromChordsToMelodies(JSON.parse(httpRequest.response))
-      staveNotes = generateStaveNotes(melodies[0], melodies[1], melodies[2], melodies[3]);
-      console.log(staveNotes);
-      showMusicArea();
-      drawMusic();
-    } else {
-      var undefinedWarning = "";
-      if (!httpRequest.response) {
-        undefinedWarning = "the server returned no response."
+  try {
+    if (httpRequest.readyState === XMLHttpRequest.DONE) {
+      if (httpRequest.status === 200) {
+        var parsedChords = JSON.parse(httpRequest.response);
+        chords = parsedChords; // Cache the data
+        var melodies = transformFromChordsToMelodies(parsedChords)
+        staveNotes = generateStaveNotes(melodies[0], melodies[1], melodies[2], melodies[3]);
+        showMusicArea();
+        drawMusic();
+      } else {
+        var undefinedWarning = "";
+        if (!httpRequest.response) {
+          undefinedWarning = "the server returned no response."
+        }
+        // TODO
+        console.log(httpRequest.response.toString());
+        hideMusicArea();
+        showError(decodeURI(httpRequest.response.toString()) + undefinedWarning);
       }
-      // TODO
-      console.log();
-      $("#errormsg").html("<strong>Error</strong> (" + httpRequest.status.toString() + "): " + decodeURI(httpRequest.response.toString()) + undefinedWarning);
-      hideMusicArea();
-      showError();
     }
   }
-  //}
-  /*catch( e ) {
-   var erromsg = "<strong>Unexpected Error:</strong> " + e.description;
-   $("#errormsg").html("<strong>Unexpected Error:</strong> " + e.description + e);
-   hideMusicArea();
-   showError();
-   }*/
+  catch(e) {
+    hideMusicArea();
+    showError(e.description);
+  }
 }
 
 // Accept an array of arrays, each of which lists chord tones. Outer array is ordered. Inner array is SATB.
@@ -222,7 +222,6 @@ function renderVoices(sopranoSN, altoSN, tenorSN, bassSN, yPos) {
       resolution: Vex.Flow.RESOLUTION
     });
   }
-  console.log(tenorSN);
   // Create voices and add notes to each of them.
   var sopranoV = create_voice(sopranoSN.length).addTickables(sopranoSN);
   var altoV = create_voice(altoSN.length).addTickables(altoSN);

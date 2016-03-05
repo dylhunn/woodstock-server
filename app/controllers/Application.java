@@ -26,7 +26,7 @@ public class Application extends Controller {
         try {
             result = Harmonizer.harmonize(str);
         } catch (Exception e) {
-            return badRequest(e.toString());
+            return badRequest(e.getMessage());
         }
         return ok(Json.toJson(result));
     }
