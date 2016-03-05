@@ -4,10 +4,13 @@
 
 # Home page
 #GET     /                           controllers.Application.index()
-GET     /                           controllers.Assets.at(path="/public", file="index.html")
-GET     /index.html                           controllers.Assets.at(path="/public", file="index.html")
-GET     /about.html                           controllers.Assets.at(path="/public", file="about.html")
-GET     /contact.html                         controllers.Assets.at(path="/public", file="contact.html")
+GET     /                           controllers.Assets.at(path="/public", file="harmonize.html")
+GET     /index.html                           controllers.Assets.at(path="/public", file="harmonize.html")
+GET     /index                           controllers.Assets.at(path="/public", file="harmonize.html")
+
+GET     /harmonize                           controllers.Assets.at(path="/public", file="harmonize.html")
+GET     /about                          controllers.Application.about()
+GET     /contact                         controllers.Application.contact()
 GET     /harmonize/*progression     controllers.Application.harmonize(progression :String)
 
 

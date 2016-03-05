@@ -25,18 +25,18 @@
 	<nav class="navbar navbar-default navbar-fixed-top">
 		<div class="container">
 			<div class="navbar-header">
-				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar" >
 					<span class="sr-only">Toggle navigation</span>
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="index.html">Woodstock</a>
+				<a class="navbar-brand" href="index">Woodstock</a>
 			</div>
 			<div id="navbar" class="navbar-collapse collapse">
 				<ul class="nav navbar-nav">
-					<li><a href="about.html">About</a></li>
-					<li><a href="contact.html">Contact</a></li>
+					<li><a href="about">About</a></li>
+					<li><a href="contact">Contact</a></li>
 				</ul>
 			</div><!--/.nav-collapse -->
 		</div>
@@ -49,9 +49,10 @@
 			<p>Enter chord symbols or roman numerals. We'll do the rest.</p>
 			<div class="input-group">
 				<!--<label for="comment">Harmony:</label>-->
-				<input class="form-control input-lg" id="inputlg" type="text">
+				<input class="form-control input-lg" id="inputlg" type="text" onkeydown = "if (event.keyCode == 13)
+                        document.getElementById('harmonizeBtn').click()">
 				<span class="input-group-btn">
-					<a class="btn btn-lg btn-primary" href="#" role="button" onclick="requestAndDraw();">Harmonize &raquo;</a>
+					<button class="btn btn-lg btn-primary" id="harmonizeBtn" href="#" role="button" onclick="requestAndDraw();">Harmonize &raquo;</button>
 				</span>
 			</div>
 
@@ -99,10 +100,9 @@
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/vexflow/vexflow-min.js"></script>
     <script src="assets/javascripts/music.js"></script>
-	<script type="text/javascript" src="http://cdn.tonejs.org/latest/Tone.min.js"></script>
+	<script src="assets/tonejs/Tone.min.js"></script>
 	<script src="assets/javascripts/playback.js"></script>
 	<script src="assets/javascripts/resize_debounce.js"></script>
-
 
 </body>
 </html>

@@ -9,6 +9,8 @@ import java.util.Scanner;
 
 public class Main {
 
+	// Main class for testing purposes only
+
 	public static void main(String[] args) {
 		System.out.println("Enter chord symbols or roman numerals.");
 		Scanner input = new Scanner(System.in);

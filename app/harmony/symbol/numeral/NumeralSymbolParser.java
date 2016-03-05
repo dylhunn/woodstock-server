@@ -13,6 +13,7 @@ import java.util.Optional;
 public class NumeralSymbolParser implements Parser {
 
     private String symbol;
+    private final String originalSymbol;
 
     // TODO ugly
     private String numeralSymbolMods = ""; // used to share data
@@ -25,6 +26,7 @@ public class NumeralSymbolParser implements Parser {
         assert (Arrays.asList(Thread.currentThread().getStackTrace()).toString().contains("GenericSymbolParser"));
 
         this.symbol = symbol;
+        this.originalSymbol = symbol;
     }
 
     public NumeralSymbol parse() throws IllegalChordSymbolException {
@@ -87,7 +89,7 @@ public class NumeralSymbolParser implements Parser {
         }
 
         if (thisType == null) {
-            throw new IllegalChordSymbolException("The numeral was invalid.");
+            throw new IllegalChordSymbolException("The numeral (" + originalSymbol + ") was invalid.");
         }
         this.numeralSymbolMods = symbolMods; // overwrite mods so only the first chord remains
         this.qualityMod = modifiedQuality; // ditto (because of the recursion)

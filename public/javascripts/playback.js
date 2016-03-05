@@ -16,8 +16,8 @@ function playMusic() {
     musicPlaying = true;
     $("#playbtn").prop("disabled", true);
     $("#stopbtn").prop("disabled", false);
-    $("#inputlg").prop("disabled", true);
-
+    $("#harmonizeBtn").prop("disabled", true);
+    $("#harmonizeBtn").prop("disabled", true);
 
     var chordsClone = chords.slice(0);
     playSound(chordsClone[0]);
@@ -43,6 +43,7 @@ function stopMusic() {
     $("#stopbtn").prop("disabled", true);
     $("#playbtn").prop("disabled", false);
     $("#inputlg").prop("disabled", false);
+    $("#harmonizeBtn").prop("disabled", false);
 
 }
 
