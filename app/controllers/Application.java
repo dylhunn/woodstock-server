@@ -18,6 +18,7 @@ public class Application extends Controller {
     }
 
     public Result harmonize(String input) {
+        input = input.replace("%2F", "/");
         List<String> inputChords = Arrays.asList(input.split("%20"));
         List<List<String>> result = new ArrayList<>();
         String str = "";
@@ -25,7 +26,7 @@ public class Application extends Controller {
         try {
             result = Harmonizer.harmonize(str);
         } catch (Exception e) {
-
+            return badRequest(e.toString());
         }
         return ok(Json.toJson(result));
     }

@@ -65,7 +65,9 @@ function completeHarmonyRequest() {
       if (!httpRequest.response) {
         undefinedWarning = "the server returned no response."
       }
-      $("#errormsg").html("<strong>Error</strong> (" + httpRequest.status.toString() + "): " + httpRequest.response + undefinedWarning);
+      // TODO
+      console.log();
+      $("#errormsg").html("<strong>Error</strong> (" + httpRequest.status.toString() + "): " + decodeURI(httpRequest.response.toString()) + undefinedWarning);
       hideMusicArea();
       showError();
     }
