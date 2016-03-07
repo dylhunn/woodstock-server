@@ -21,10 +21,16 @@ public class Application extends Controller {
 
     public Result about() {
         String title = "About Woodstock";
-        String content = "Woodstock transforms chord symbols into music." +
+        String content = "Woodstock transforms chord symbols into music. " +
                 "Specifically, the goal of the project to to generate four-part chorales that are compliant with the traditional " +
-                "rules of common practice period harmony. This project is still pre-alpha. Music rendered in the browser with VexFlow" +
-                " (MIT License); audio rendered with Tone.js (also MIT License); built with Play Framework 2.";
+                "rules of common practice period harmony. This project is still pre-alpha." +
+                "<p>The following components are used under the MIT license: " +
+                "<ul><li>Music rendered in the browser with VexFlow</li>" +
+                "<li>Audio generated with Tone.js</li>" +
+                "<li>Bootstrap framework</li>" +
+                "<li>Bootswatch Cosmo theme</li></ul>" +
+                "<p>These components are used under the Apache 2 License:" +
+                "<ul><li>Play Framework 2</li></ul>";
         Content html = views.html.auxtemplate.render(title, content);
         return ok(html);
     }
