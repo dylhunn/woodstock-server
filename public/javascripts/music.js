@@ -7,11 +7,14 @@ var staveNotes = [[]]; // cached VexFlow staveNote data, organized by melody
 var httpRequest;
 
 function showMusicArea() {
+  $('#tutdiv').hide(); // Hide the tutorial on first execution only
   $('#musicdiv').show();
+  $('#musiccontroldiv').show();
 }
 
 function hideMusicArea() {
   $('#musicdiv').hide();
+  $('#musiccontroldiv').hide();
 }
 
 // Parameter is optional; do not include "Error: "
@@ -19,6 +22,7 @@ function showError(msg) {
   $('#errormsg').show()
   msg = msg || "";
   $("#errormsg").html("<strong>Error</strong>: " + msg);
+  //hideMusicArea();
 }
 
 function hideError() {
@@ -30,7 +34,6 @@ function requestAndDraw() {
   var text = document.getElementById("inputlg").value;
   if (!text) {
     showError("you must specify a progression.");
-    hideMusicArea();
     return;
   }
   initiateHarmonyRequest(text);
@@ -70,13 +73,11 @@ function completeHarmonyRequest() {
         }
         // TODO
         console.log(httpRequest.response.toString());
-        hideMusicArea();
         showError(decodeURI(httpRequest.response.toString()) + undefinedWarning);
       }
     }
   }
   catch(e) {
-    hideMusicArea();
     showError(e.description);
   }
 }

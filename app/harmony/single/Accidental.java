@@ -46,7 +46,7 @@ public class Accidental implements Comparable<Accidental> {
 			numChars++;
 		}
 		while (ss.toUpperCase().startsWith("X")) {
-			numChars += 2;
+			numChars += 1;
 			ss = ss.substring(1);
 		}
 		while (ss.startsWith("#")) {
@@ -60,7 +60,6 @@ public class Accidental implements Comparable<Accidental> {
 	 * Reads an accidental from the front of a String.
 	 */
 	public static Accidental fromFrontOfString(String ss) {
-		int numChars = beginsWithAccidental(ss);
 		// TODO Serious: This is broken for symbols like natIII if the root of the three was flat
 		// to begin with. In other words, # is always considered +1, bb is always considered -2,
 		// regardless of the original pitch. Also, there is no support for naturals in this context at all.

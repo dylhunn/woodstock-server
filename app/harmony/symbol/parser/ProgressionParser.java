@@ -25,9 +25,11 @@ public class ProgressionParser {
         String firstToken = line.next();
         Optional<Key> key = Optional.empty();
         if (firstToken.contains(":")) { // Interpret as a key.
+            String afterCol = firstToken.substring(firstToken.indexOf(":")+1);
             firstToken = firstToken.substring(0, firstToken.indexOf(":"));
             Key k = Key.fromString(firstToken);
             key = Optional.of(k);
+            if (!afterCol.isEmpty()) symbols.add(new GenericSymbolParser(afterCol).parse());
         } else { // Interpret as a chord symbol.
             symbols.add(new GenericSymbolParser(firstToken).parse());
         }

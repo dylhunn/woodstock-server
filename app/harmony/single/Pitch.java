@@ -77,7 +77,7 @@ public class Pitch {
 			Accidental acc = Accidental.fromFrontOfString(str.substring(1));
 			p = new Pitch(name, acc, Role.NO_ROLE);
 		} catch (IllegalArgumentException e) {
-			throw new ProgressionInputException("The input " + str + " cannot be part of a pitch");
+			throw new ProgressionInputException("The input " + str + " cannot be part of a pitch.");
 		}
 		return p;
 	}

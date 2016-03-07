@@ -29,6 +29,7 @@ public class Main {
 				continue;
 			} catch (Exception e) {
 				System.out.println("Unexpected internal error. " + e.getMessage() + "\n");
+                e.printStackTrace();
 				continue;
 			}
 		}

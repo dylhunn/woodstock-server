@@ -8,7 +8,7 @@ var sounding = false;
 // Precondition! music.js must be loaded to provide var chords.
 function playMusic() {
     synth = makeSynth(default_voices);
-    hideError();
+    //hideError();
     if (!chords || chords == [[]] || chords.length == 0) {
         showError("We can't find any chords to play. Try re-harmonizing.");
         return;

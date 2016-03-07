@@ -13,11 +13,11 @@
 	<title>Woodstock</title>
 
 	<!-- Bootstrap core CSS -->
-	<link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
+	<link href="assets/bootstrap/css/bootstrap-themed.min.css" rel="stylesheet">
 	<!-- Custom styles for this template -->
-	<link href="assets/bootstrap/navbar-fixed-top.css" rel="stylesheet">
-
+	<link href="assets/bootstrap/css/navbar-fixed-top.css" rel="stylesheet">
+	<!-- Custom CSS, loaded last -->
+	<link href="assets/stylesheets/main.css" rel="stylesheet">
 </head>
 
 <body onresize=>
@@ -42,12 +42,12 @@
 		</div>
 	</nav>
 
-	<div class="container">
-
-		<div class="jumbotron">
-			<h1>Woodstock</h1>
-			<p>Enter chord symbols or roman numerals. We'll do the rest.</p>
-			<div class="input-group">
+	<nav class="navbar navbar-default navbar-fixed-bottom">
+		<div class="container">
+			<div class="alert alert-danger mtb10" role="alert" id="errormsg" style="display:none";>
+				<strong>Oops!</strong> There was an unnknown issue.
+			</div>
+			<div class="input-group mtb10">
 				<!--<label for="comment">Harmony:</label>-->
 				<input class="form-control input-lg" id="inputlg" type="text" onkeydown = "if (event.keyCode == 13)
                         document.getElementById('harmonizeBtn').click()">
@@ -55,37 +55,33 @@
 					<button class="btn btn-lg btn-primary" id="harmonizeBtn" href="#" role="button" onclick="requestAndDraw();">Harmonize &raquo;</button>
 				</span>
 			</div>
-
-			<ol style="visibility:hidden;"></ol>
-			<div class="alert alert-danger" role="alert" id="errormsg" style="display:none";>
-				<strong>Oops!</strong> There was an unnknown issue.
-			</div>
-
 		</div>
+	</nav>
 
+	<div class="container">
+		<div class="jumbotron" id="musiccontroldiv" style="display:none";>
+			<button type="button" id="playbtn" class="btn btn-success" onclick="playMusic();"><span class="glyphicon glyphicon-play" aria-hidden="true"></span>Play</button>
+			<button type="button" id="stopbtn" class="btn btn-danger" disabled="true" onclick="stopMusic();"><span class="glyphicon glyphicon-stop" aria-hidden="true"></span>Stop</button>
+		</div>
 		<div class="jumbotron" id="musicdiv" style="display:none";>
-			<button type="button" id="playbtn" class="btn btn-success" onclick="playMusic();">Play</button>
-			<button type="button" id="stopbtn" class="btn btn-danger" disabled="true" onclick="stopMusic();">Stop</button>
-
-
 			<canvas width=1 height=1 id="musiccanvas"></canvas>
 		</div>
 
-		<div class="jumbotron">
-			<h1>Tutorial</h1>
+		<div class="jumbotron" id="tutdiv">
+			<h1>Welcome</h1>
 			<p>Woodstock will turn your chord progressions into four-part chorales.</p>
 			<p>You can enter chord symbols:</p>
 
 			<ol style="visibility:hidden;"></ol>
 			<div class="alert alert-info" role="alert">
-				<strong>Example:</strong> C F D/F# G C/E Dm C7 GMm7 CM7 Cm/Eb
+				C F D/F# G C/E Dm C7 GMm7 CM7 Cm/Eb
 			</div>
 
 			<p>Roman numerals work too!</p>
 
 			<ol style="visibility:hidden;"></ol>
-			<div class="alert alert-info" role="alert">
-				<strong>Example: </strong> D: I IV V vi I bvi V viidim I V65 #V7 Vaug6 V I
+			<div class="alert alert-warning" role="alert">
+				D: I IV V vi I bvi V viidim I V65 #V7 Vaug6 V I
 			</div>
 
 		</div>
@@ -94,9 +90,9 @@
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.4/raphael-min.js"></script>
-    <script>window.jQuery || document.write('<script src="assets/js/vendor/jquery.min.js"><\/script>')</script>
+    <!--script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script-->
+    <!--script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.4/raphael-min.js"></script-->
+    <script src="assets/jquery/jquery.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/vexflow/vexflow-min.js"></script>
     <script src="assets/javascripts/music.js"></script>
