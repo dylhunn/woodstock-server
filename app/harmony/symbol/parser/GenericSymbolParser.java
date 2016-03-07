@@ -26,12 +26,12 @@ public class GenericSymbolParser implements Parser {
             throw new IllegalChordSymbolException("A chord symbol cannot be empty.");
         Symbol output;
         // TODO this is a hack; improve numeral vs letter detection
-        if (symbol.indexOf("I") != -1 && symbol.indexOf("i") != -1 && symbol.indexOf("V") != -1 && symbol.indexOf("v") != -1
-                && symbol.indexOf("N") != -1 && symbol.indexOf("n") != -1 && !symbol.contains("Fr") && !symbol.contains("It")
-                && !symbol.contains("Ger")) {
-            output = new ChordSymbolParser(symbol).parse();
-        } else {
+        if (symbol.contains("I") || symbol.contains("i") || symbol.contains("V") || symbol.contains("v") ||
+                symbol.contains("N") || symbol.contains("n") || symbol.contains("Fr") || symbol.contains("It")
+                || symbol.contains("Ger")) {
             output = new NumeralSymbolParser(symbol).parse();
+        } else {
+            output = new ChordSymbolParser(symbol).parse();
         }
         result = Optional.of(output);
         return output;

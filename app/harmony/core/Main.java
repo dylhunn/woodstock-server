@@ -18,6 +18,12 @@ public class Main {
 			Progression p;
 			try {
 				p = ProgressionParser.parse(input.nextLine());
+                /*System.out.println(symbols.get(symbols.size() - 1));
+			    System.out.println(chords.get(chords.size() - 1));*/
+                System.out.println("Generating PDF file...");
+                System.out.println(p);
+                new LilypondWriter(p).show();
+                //chords.get(chords.size() - 1).printEvaluationData(Optional.empty(), Optional.empty());
 			} catch (IllegalChordSymbolException | ProgressionInputException e) {
 				System.out.println(e.getMessage() + "\n");
 				continue;
@@ -25,12 +31,6 @@ public class Main {
 				System.out.println("Unexpected internal error. " + e.getMessage() + "\n");
 				continue;
 			}
-			/*System.out.println(symbols.get(symbols.size() - 1));
-			System.out.println(chords.get(chords.size() - 1));*/
-			System.out.println("Generating PDF file...");
-			System.out.println(p);
-			new LilypondWriter(p).show();
-			//chords.get(chords.size() - 1).printEvaluationData(Optional.empty(), Optional.empty());
 		}
 	}
 }

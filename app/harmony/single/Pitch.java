@@ -1,7 +1,9 @@
 package harmony.single;
 
 import java.util.Arrays;
+import java.util.Scanner;
 
+import harmony.exception.ProgressionInputException;
 import harmony.interval.Interval;
 
 public class Pitch {
@@ -66,6 +68,18 @@ public class Pitch {
 	// no larger than, but including, 12 semitones
 	public int semitonesUpTo(Pitch other) {
 		return new Interval(new Note(this, 1), new Note(other, 2)).REDUCED_NUM_SEMITONES;
+	}
+
+	public static Pitch fromFrontOfString(String str) throws ProgressionInputException {
+		Pitch p;
+		try {
+			Name name = Name.valueOf(str.substring(0, 1));
+			Accidental acc = Accidental.fromFrontOfString(str.substring(1));
+			p = new Pitch(name, acc, Role.NO_ROLE);
+		} catch (IllegalArgumentException e) {
+			throw new ProgressionInputException("The input " + str + " cannot be part of a pitch");
+		}
+		return p;
 	}
 
 	@Override

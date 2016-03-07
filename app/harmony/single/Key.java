@@ -1,12 +1,14 @@
 package harmony.single;
 
 import harmony.core.Library;
+import harmony.exception.ProgressionInputException;
 import harmony.interval.Interval;
 import harmony.interval.IntervalQuality;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
 
 public class Key {
 
@@ -52,6 +54,16 @@ public class Key {
 		while (degree > Pitch.NUM_DISTINCT_NOTE_NAMES)
 			degree -= Pitch.NUM_DISTINCT_NOTE_NAMES;
 		return getScale().get(degree);
+	}
+
+	public static Key fromString(String key) throws ProgressionInputException {
+		Pitch pitch = Pitch.fromFrontOfString(key);
+
+		KeyType kt = KeyType.MAJOR;
+		if (key.contains("minor") || key.contains("Minor") || key.contains("m")) {
+			kt = KeyType.H_MINOR;
+		}
+		return new Key(pitch, kt);
 	}
 
 	@Override

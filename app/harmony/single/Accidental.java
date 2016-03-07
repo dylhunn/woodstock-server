@@ -59,7 +59,7 @@ public class Accidental implements Comparable<Accidental> {
 	/**
 	 * Reads an accidental from the front of a String.
 	 */
-	public static Accidental fromString(String ss) {
+	public static Accidental fromFrontOfString(String ss) {
 		int numChars = beginsWithAccidental(ss);
 		// TODO Serious: This is broken for symbols like natIII if the root of the three was flat
 		// to begin with. In other words, # is always considered +1, bb is always considered -2,

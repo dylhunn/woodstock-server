@@ -98,7 +98,7 @@ public class NumeralSymbolParser implements Parser {
 
     private Accidental consumeAccidental() {
         int numChars = Accidental.beginsWithAccidental(symbol);
-        Accidental a = Accidental.fromString(symbol);
+        Accidental a = Accidental.fromFrontOfString(symbol);
         symbol = symbol.substring(numChars);
         return a;
     }

@@ -4,18 +4,19 @@ import harmony.single.Key;
 import harmony.symbol.Symbol;
 
 import java.util.List;
+import java.util.Optional;
 
 public class KeyedChordSeries implements ChordSeries {
 
 	private final List<Symbol> symbols;
-	private final Key key;
+	private final Optional<Key> key;
 
-	public KeyedChordSeries(List<Symbol> symbols, Key key) {
+	public KeyedChordSeries(List<Symbol> symbols, Optional<Key> key) {
 		this.symbols = symbols;
 		this.key = key;
 	}
 
-	public Key getKey() {
+	public Optional<Key> getKey() {
 		return key;
 	}
 
@@ -30,7 +31,7 @@ public class KeyedChordSeries implements ChordSeries {
 	}
 
 	@Override
-	public Key getKeyOfSymbol(int index) {
+	public Optional<Key> getKeyOfSymbol(int index) {
 		return key;
 	}
 }

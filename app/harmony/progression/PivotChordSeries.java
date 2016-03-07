@@ -4,6 +4,7 @@ import harmony.single.Key;
 import harmony.symbol.Symbol;
 
 import java.util.List;
+import java.util.Optional;
 
 public class PivotChordSeries implements ChordSeries {
 
@@ -35,7 +36,7 @@ public class PivotChordSeries implements ChordSeries {
 	}
 
 	@Override
-	public Key getKeyOfSymbol(int index) {
+	public Optional<Key> getKeyOfSymbol(int index) {
 		return newP.getKey();
 	}
 }

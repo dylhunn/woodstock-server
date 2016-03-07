@@ -1,6 +1,7 @@
 package harmony.progression;
 
 import harmony.chord.Chord;
+import harmony.exception.ProgressionInputException;
 import harmony.single.Key;
 import harmony.symbol.Symbol;
 
@@ -43,7 +44,7 @@ public class Progression {
 		return symbols;
 	}
 
-	public Key getKeyOfSymbol(int index) { // TODO inefficient
+	public Optional<Key> getKeyOfSymbol(int index) { // TODO inefficient
 		if (index >= length())
 			throw new RuntimeException("Invalid chord index.");
 		for (int i = 0; i < progressions.size(); i++) {
@@ -54,7 +55,7 @@ public class Progression {
 		throw new RuntimeException("Invalid chord index in overall progression.");
 	}
 
-	public List<Chord> getChords() {
+	public List<Chord> getChords() throws ProgressionInputException {
 		if (this.chords.isPresent())
 			return this.chords.get(); // caching
 		List<Symbol> symbols = getSymbols(); // fill cache
@@ -84,7 +85,7 @@ public class Progression {
 		return getSymbols().size();
 	}
 
-	public String toString() {
+	/*public String toString() {
 		String ret = "";
 		List<Chord> chords = getChords();
 		List<Symbol> symbols = getSymbols();
@@ -94,5 +95,5 @@ public class Progression {
 			if (i != chords.size() - 1) ret += ", ";
 		}
 		return ret;
-	}
+	}*/
 }

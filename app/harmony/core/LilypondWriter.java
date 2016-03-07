@@ -1,6 +1,7 @@
 package harmony.core;
 
 import harmony.chord.Chord;
+import harmony.exception.ProgressionInputException;
 import harmony.progression.Progression;
 
 import java.awt.*;
@@ -26,7 +27,7 @@ public class LilypondWriter {
 
 	String output = ""; // The formatted Lilypond data
 
-	public LilypondWriter(Progression p) {
+	public LilypondWriter(Progression p) throws ProgressionInputException {
 		List<Chord> chords = p.getChords();
 		String trebleOutput = "";
 		String bassOutput = "";

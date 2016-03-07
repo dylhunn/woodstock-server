@@ -48,7 +48,7 @@ public class Application extends Controller {
         for (String s : inputChords) str = str + s + " ";
         try {
             result = Harmonizer.harmonize(str);
-        } catch (Exception e) {
+        } catch (Exception e) { // Harmonizing failed for some reason
             return badRequest(e.getMessage());
         }
         return ok(Json.toJson(result));

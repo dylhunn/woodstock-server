@@ -1,6 +1,7 @@
 package harmony.symbol.numeral;
 
 import harmony.core.Library;
+import harmony.exception.ProgressionInputException;
 import harmony.single.Accidental;
 import harmony.single.Key;
 import harmony.single.Pitch;
@@ -57,26 +58,28 @@ public class NumeralSymbol implements Symbol {
 
 	// TODO cache
 	@Override
-	public ChordSymbol getChordSymbol(Key key) {
+	public ChordSymbol getChordSymbol(Optional<Key> key) throws ProgressionInputException {
+		if (!key.isPresent()) throw new ProgressionInputException("No key was specified so numeral "
+				+ this.toString() + " could not be parsed.");
 		// TODO handle different chord types with alterations
 		ChordSymbol cs;
 		if (qualityMod == QualityModifier.dim)
-			cs = new DiminishedTriadSymbol(numeral.getRoot(key), inversion, new HashSet<>(), constraints);
+			cs = new DiminishedTriadSymbol(numeral.getRoot(key.get()), inversion, new HashSet<>(), constraints);
 		else if (qualityMod == QualityModifier.aug)
-			cs = new AugmentedTriadSymbol(numeral.getRoot(key), inversion, new HashSet<>(), constraints);
+			cs = new AugmentedTriadSymbol(numeral.getRoot(key.get()), inversion, new HashSet<>(), constraints);
 		else if (qualityMod == QualityModifier.halfdim)
-			cs = new HalfDiminishedSeventhSymbol(numeral.getRoot(key), inversion, new HashSet<>(), constraints);
+			cs = new HalfDiminishedSeventhSymbol(numeral.getRoot(key.get()), inversion, new HashSet<>(), constraints);
 		// Major or Neapolitan
 		else if (numeral.isUpper())
-			cs = new MajorTriadSymbol(numeral.getRoot(key), inversion, new HashSet<>(), constraints);
+			cs = new MajorTriadSymbol(numeral.getRoot(key.get()), inversion, new HashSet<>(), constraints);
 		// Minor
 		else if (numeral.isLower())
-			cs = new MinorTriadSymbol(numeral.getRoot(key), inversion, new HashSet<>(), constraints);
+			cs = new MinorTriadSymbol(numeral.getRoot(key.get()), inversion, new HashSet<>(), constraints);
 		// Aug 6? What else? TODO
 		else
 			throw new RuntimeException("We don't know about this numeral yet (probably an Aug6)."); // TODO
 
-		cs.attachModifications(getAlterationsFromSymbolText(symbolMods, cs, key));
+		cs.attachModifications(getAlterationsFromSymbolText(symbolMods, cs, key.get()));
 		return cs;
 	}
 
@@ -93,7 +96,7 @@ public class NumeralSymbol implements Symbol {
 		while (!symbolMods.isEmpty()) {
  			// Extract the accidental and number from the modifications string
 			int numCharsInAccidental = Accidental.beginsWithAccidental(symbolMods);
-			Accidental accidental = Accidental.fromString(symbolMods);
+			Accidental accidental = Accidental.fromFrontOfString(symbolMods);
 			symbolMods = symbolMods.substring(numCharsInAccidental);
 			Optional<Integer> numberOpt = Library.readIntFromFrontOfString(symbolMods);
 			if (!numberOpt.isPresent()) throw new RuntimeException("Unable to parse symbol modification: " + symbolMods);

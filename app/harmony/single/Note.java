@@ -1,6 +1,7 @@
 package harmony.single;
 
 import java.util.Optional;
+import java.util.Scanner;
 
 import harmony.interval.IntervalQuality;
 

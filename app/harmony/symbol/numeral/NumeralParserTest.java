@@ -1,6 +1,7 @@
 package harmony.symbol.numeral;
 
 import harmony.exception.IllegalChordSymbolException;
+import harmony.exception.ProgressionInputException;
 import harmony.single.Accidental;
 import harmony.single.Key;
 import harmony.single.Pitch;
@@ -9,6 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import static org.junit.Assert.assertTrue;
@@ -89,16 +91,18 @@ public class NumeralParserTest {
 	private Pitch parsePitch(String pitch) {
 		Pitch.Name p = Pitch.Name.valueOf(pitch.substring(0, 1));
 		pitch = pitch.substring(1);
-		Accidental a = Accidental.fromString(pitch);
+		Accidental a = Accidental.fromFrontOfString(pitch);
 		return new Pitch(p, a, Pitch.Role.NO_ROLE);
 	}
 
 	public void validateNumeral(String numeral, Key key, Set<Pitch> expectedPitches) {
 		Set<Pitch> actualPitches = null;
 		try {
-			actualPitches = new GenericSymbolParser(numeral).parse().getChordSymbol(key).chordPitches();
+			actualPitches = new GenericSymbolParser(numeral).parse().getChordSymbol(Optional.of(key)).chordPitches();
 		} catch (IllegalChordSymbolException e) {
 			fail("Parsing failed for symbol " + numeral);
+		} catch (ProgressionInputException e) {
+			fail("Parsing failed for symbol " + numeral + " because a key was not provided.");
 		}
 		assertTrue(actualPitches.equals(expectedPitches));
 	}

@@ -56,7 +56,7 @@ public abstract class ChordSymbol implements Symbol {
 	}
 
 	@Override
-	public ChordSymbol getChordSymbol(Key key) {
+	public ChordSymbol getChordSymbol(Optional<Key> key) {
 		return this;
 	}
 

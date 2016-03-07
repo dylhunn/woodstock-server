@@ -11,10 +11,7 @@ import harmony.single.Key;
 import harmony.single.Pitch;
 import harmony.symbol.Symbol;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * Parses a progression from an input string.
@@ -24,8 +21,17 @@ public class ProgressionParser {
     public static Progression parse(String input) throws IllegalChordSymbolException, ProgressionInputException {
         List<Symbol> symbols = new ArrayList<>();
         Scanner line = new Scanner(input);
-        // TODO allow key input
-        Key key = new Key(new Pitch(Pitch.Name.C, new Accidental(Accidental.AccidentalType.NATURAL), Pitch.Role.ROOT), Key.KeyType.MAJOR);
+        if (!line.hasNext()) throw new ProgressionInputException("Cannot harmonize empty progression.");
+        String firstToken = line.next();
+        Optional<Key> key = Optional.empty();
+        if (firstToken.contains(":")) { // Interpret as a key.
+            firstToken = firstToken.substring(0, firstToken.indexOf(":"));
+            Key k = Key.fromString(firstToken);
+            key = Optional.of(k);
+        } else { // Interpret as a chord symbol.
+            symbols.add(new GenericSymbolParser(firstToken).parse());
+        }
+
         while (line.hasNext()) {
             String token = line.next();
             symbols.add(new GenericSymbolParser(token).parse());
