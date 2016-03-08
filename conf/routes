@@ -4,9 +4,9 @@
 
 # Home page
 #GET     /                           controllers.Application.index()
-GET     /                           controllers.Assets.at(path="/public", file="harmonize.html")
-GET     /index.html                           controllers.Assets.at(path="/public", file="harmonize.html")
-GET     /index                           controllers.Assets.at(path="/public", file="harmonize.html")
+GET     /                           controllers.Assets.at(path="/public", file="landing.html")
+GET     /index.html                           controllers.Assets.at(path="/public", file="landing.html")
+GET     /index                           controllers.Assets.at(path="/public", file="landing.html")
 
 GET     /harmonize                           controllers.Assets.at(path="/public", file="harmonize.html")
 GET     /about                          controllers.Application.about()

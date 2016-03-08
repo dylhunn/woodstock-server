@@ -17,13 +17,13 @@
 	<!-- Custom styles for this template -->
 	<link href="assets/bootstrap/css/navbar-fixed-top.css" rel="stylesheet">
 	<!-- Custom CSS, loaded last -->
-	<link href="assets/stylesheets/main.css" rel="stylesheet">
+	<link href="assets/stylesheets/harmony-main.css" rel="stylesheet">
 </head>
 
 <body onresize=>
 	<!-- Fixed navbar -->
 	<nav class="navbar navbar-default navbar-fixed-top">
-		<div class="container">
+		<div class="container-fluid">
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar" >
 					<span class="sr-only">Toggle navigation</span>
@@ -44,14 +44,14 @@
 	</nav>
 
 	<nav class="navbar navbar-default navbar-fixed-bottom">
-		<div class="container">
+		<div class="container-fluid">
 			<div class="alert alert-danger mtb10" role="alert" id="errormsg" style="display:none";>
 				<strong>Oops!</strong> There was an unnknown issue.
 			</div>
 			<div class="input-group mtb10">
 				<!--<label for="comment">Harmony:</label>-->
 				<input class="form-control input-lg" id="inputlg" type="text" onkeydown = "if (event.keyCode == 13)
-                        document.getElementById('harmonizeBtn').click()">
+				document.getElementById('harmonizeBtn').click()">
 				<span class="input-group-btn">
 					<button class="btn btn-lg btn-primary" id="harmonizeBtn" href="#" role="button" onclick="requestAndDraw();">Harmonize &raquo;</button>
 				</span>
@@ -59,7 +59,7 @@
 		</div>
 	</nav>
 
-	<div class="container">
+	<div class="container-fluid">
 		<div class="jumbotron" id="musiccontroldiv" style="display:none";>
 			<H2><span class="label label-default">Controls</span></H2>
 			<button type="button" id="playbtn" class="btn btn-success" onclick="playMusic();"><span class="glyphicon glyphicon-play" aria-hidden="true"></span> Play</button>
@@ -82,7 +82,7 @@
 			<p>Roman numerals work too!</p>
 
 			<ol style="visibility:hidden;"></ol>
-			<div class="alert alert-warning" role="alert">
+			<div class="alert alert-info" role="alert">
 				D: I IV V vi I bvi V viidim I V65 #V7 Vaug6 V I
 			</div>
 
@@ -98,9 +98,9 @@
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/vexflow/vexflow-min.js"></script>
     <script src="assets/javascripts/music.js"></script>
-	<script src="assets/tonejs/Tone.min.js"></script>
-	<script src="assets/javascripts/playback.js"></script>
-	<script src="assets/javascripts/resize_debounce.js"></script>
+    <script src="assets/tonejs/Tone.min.js"></script>
+    <script src="assets/javascripts/playback.js"></script>
+    <script src="assets/javascripts/resize_debounce.js"></script>
 
 </body>
 </html>
