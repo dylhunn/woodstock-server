@@ -57,7 +57,7 @@ function requestAndDraw() {
 }
 
 function completeHarmonyRequest() {
-  try {
+  //try {
     if (httpRequest.readyState === XMLHttpRequest.DONE) {
       if (httpRequest.status === 200) {
         var parsedChords = JSON.parse(httpRequest.response);
@@ -76,10 +76,10 @@ function completeHarmonyRequest() {
         showError(decodeURI(httpRequest.response.toString()) + undefinedWarning);
       }
     }
-  }
-  catch(e) {
-    showError(e.description);
-  }
+  //}
+  //catch(e) {
+  //  showError(e.description);
+  //}
 }
 
 // Accept an array of arrays, each of which lists chord tones. Outer array is ordered. Inner array is SATB.
@@ -105,8 +105,7 @@ function drawMusic() {
 
   // Clear and correctly size renderer
   var canvas = $("div.container div.jumbotron canvas")[0];
-  var renderer = new Vex.Flow.Renderer(canvas,
-      Vex.Flow.Renderer.Backends.CANVAS);
+  var renderer = new Vex.Flow.Renderer(canvas, Vex.Flow.Renderer.Backends.CANVAS);
   var parentDivWidth = $("#musicdiv").width();
   spaceBetweenChords = parentDivWidth - 20;
   renderer.resize(parentDivWidth - 2*marginOffset, staffSystemHeight*numSystems); // Resize and clear canvas
