@@ -3,14 +3,14 @@
 # ~~~~
 
 # Home page
-#GET     /                           controllers.Application.index()
-GET     /                           controllers.Assets.at(path="/public", file="landing.html")
-GET     /index.html                           controllers.Assets.at(path="/public", file="landing.html")
-GET     /index                           controllers.Assets.at(path="/public", file="landing.html")
+GET     /                           controllers.Application.landing()
+GET     /index                      controllers.Application.landing()
 
-GET     /harmonize                           controllers.Assets.at(path="/public", file="harmonize.html")
-GET     /about                          controllers.Application.about()
-GET     /contact                         controllers.Application.contact()
+GET     /landing                    controllers.Application.landing()
+GET     /signin                     controllers.Application.signin()
+GET     /harmonize                  controllers.Application.harmonizepage()
+GET     /about                      controllers.Application.about()
+GET     /contact                    controllers.Application.contact()
 GET     /harmonize/*progression     controllers.Application.harmonize(progression :String)
 
 

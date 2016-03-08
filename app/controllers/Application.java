@@ -1,6 +1,7 @@
 package controllers;
 
 import play.*;
+import play.data.Form;
 import play.libs.Json;
 import play.mvc.*;
 import harmony.core.Harmonizer;
@@ -42,6 +43,18 @@ public class Application extends Controller {
         return ok(html);
     }
 
+    public Result landing() {
+        return ok(views.html.landing.render());
+    }
+
+    public Result signin() {
+        return ok(views.html.signinpage.render());
+    }
+
+    public Result harmonizepage() {
+        return ok(views.html.harmonize.render());
+    }
+
     public Result harmonize(String input) {
         try {
             input = URLDecoder.decode(input, "UTF-8");
@@ -59,5 +72,4 @@ public class Application extends Controller {
         }
         return ok(Json.toJson(result));
     }
-
 }

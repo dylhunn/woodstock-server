@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+            <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <link rel="icon" href="favicon.ico">
+
+        <title>Woodstock</title>
+
+            <!-- Bootstrap core CSS -->
+        <link href="assets/bootstrap/css/bootstrap-themed.min.css" rel="stylesheet">
+            <!-- Custom CSS, loaded last -->
+        <link href="assets/stylesheets/harmony-main.css" rel="stylesheet">
+    </head>
+
+    <body onresize=>
+            <!-- Fixed navbar -->
+        @navbar.render()
+
+        <nav class="navbar navbar-default navbar-fixed-bottom">
+            <div class="container-fluid">
+                <div class="alert alert-danger mtb10" role="alert" id="errormsg" style="display:none";>
+                    <strong>Oops!</strong> There was an unnknown issue.
+                </div>
+                <div class="input-group mtb10">
+                        <!--<label for="comment">Harmony:</label>-->
+                    <input class="form-control input-lg" id="inputlg" type="text" onkeydown = "if (event.keyCode == 13)
+                        document.getElementById('harmonizeBtn').click()">
+                    <span class="input-group-btn">
+                        <button class="btn btn-lg btn-primary" id="harmonizeBtn" href="#" role="button" onclick="requestAndDraw();">Harmonize &raquo;</button>
+                    </span>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container">
+            <div class="jumbotron" id="musiccontroldiv" style="display:none";>
+                <H2><span class="label label-default">Controls</span></H2>
+                <button type="button" id="playbtn" class="btn btn-success" onclick="playMusic();"><span class="glyphicon glyphicon-play" aria-hidden="true"></span> Play</button>
+                <button type="button" id="stopbtn" class="btn btn-danger" disabled="true" onclick="stopMusic();"><span class="glyphicon glyphicon-stop" aria-hidden="true"></span> Stop</button>
+            </div>
+            <div class="jumbotron" id="musicdiv" style="display:none";>
+                <canvas width=1 height=1 id="musiccanvas"></canvas>
+            </div>
+
+            <div class="jumbotron" id="tutdiv">
+                <h1>Welcome</h1>
+                <p>Woodstock will turn your chord progressions into four-part chorales.</p>
+                <p>You can enter chord symbols:</p>
+
+                <ol style="visibility:hidden;"></ol>
+                <div class="alert alert-info" role="alert">
+				C F D/F# G C/E Dm C7 GMm7 CM7 Cm/Eb
+                </div>
+
+                <p>Roman numerals work too!</p>
+
+                <ol style="visibility:hidden;"></ol>
+                <div class="alert alert-info" role="alert">
+				D: I IV V vi I bvi V viidim I V65 #V7 Vaug6 V I
+                </div>
+
+            </div>
+        </div>
+
+            <!-- Bootstrap core JavaScript
+    ================================================== -->
+            <!-- Placed at the end of the document so the pages load faster -->
+            <!--script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.4/raphael-min.js"></script-->
+        <script src="assets/jquery/jquery.min.js"></script>
+        <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+        <script src="assets/vexflow/vexflow-min.js"></script>
+        <script src="assets/javascripts/music.js"></script>
+        <script src="assets/tonejs/Tone.min.js"></script>
+        <script src="assets/javascripts/playback.js"></script>
+        <script src="assets/javascripts/resize_debounce.js"></script>
+
+    </body>
+</html>
