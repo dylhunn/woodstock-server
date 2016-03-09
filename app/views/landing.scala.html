@@ -1,3 +1,4 @@
+@(loginForm: Form[Application.Credentials])
 <!DOCTYPE html>
 <html lang="en">
 
@@ -69,7 +70,7 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-sm-4">
-          @signinwidget.render()
+          @loginwidget.render(loginForm)
         </div>
 
         <div class="col-sm-8">

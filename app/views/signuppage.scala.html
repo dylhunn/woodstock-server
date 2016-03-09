@@ -1,0 +1,78 @@
+@(signupForm: Form[Application.UserData])
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="favicon.ico">
+
+    <title>Woodstock</title>
+
+      <!-- Bootstrap core CSS -->
+    <link href="assets/bootstrap/css/bootstrap-themed.min.css" rel="stylesheet">
+  </head>
+
+  <body onresize=>
+      <!-- Fixed navbar -->
+    @navbar.render()
+
+    <div class="container-fluid">
+
+      <div class="row">
+
+        <div class="col-sm-4">
+
+          <link href="assets/bootstrap/css/signin.css" rel="stylesheet">
+
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title"><b>Finish Signing Up</b></h3>
+            </div>
+            <div class="panel-body">
+            @helper.form(action = routes.Application.signupSubmit()) {
+              <form class="form-signinpage">
+                <label for="inputName" class="sr-only">Name</label>
+                @helper.input(signupForm("name")) { (id, name, value, args) =>
+                  <input type="text" id="inputName" class="form-control" name="name" placeholder="Name" required autofocus>
+                }
+                <label for="inputLocation" class="sr-only">Country</label>
+                @helper.input(signupForm("location")) { (id, name, value, args) =>
+                  <input type="text" id="inputLocation" class="form-control" name="location" placeholder="Country" required>
+                }
+                <label for="inputBirthday" class="sr-only">Date of Birth</label>
+                @helper.input(signupForm("birthday")) { (id, name, value, args) =>
+                  <input type="date" id="inputBirthday" class="form-control" name="birthday" placeholder="Date of Birth" required>
+                }
+                <p></p>
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Done!</button>
+              </form>
+
+            }
+            </div>
+            </div>
+            </div>
+        <div class="col-sm-8">
+            <div class="jumbotron">
+             <H1>Almost done!</H1>
+            <H3>Just a few more things to get registered.</H3>
+            </div>
+    </div>
+  </div>
+      <!-- Custom CSS, loaded last -->
+    <link href="assets/stylesheets/main-paddingtop.css" rel="stylesheet">
+
+      <!-- Bootstrap core JavaScript
+    ================================================== -->
+      <!-- Placed at the end of the document so the pages load faster -->
+      <!--script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script-->
+      <!--script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.4/raphael-min.js"></script-->
+    <script src="assets/jquery/jquery.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+
+  </body>
+</html>

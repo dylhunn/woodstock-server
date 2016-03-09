@@ -1,3 +1,4 @@
+@(loginForm: Form[Application.Credentials], message: String)
 <!DOCTYPE html>
 <html lang="en">
 
@@ -23,13 +24,18 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-sm-4">
-        @signinwidget.render()
+        @loginwidget.render(loginForm)
         </div>
 
         <div class="col-sm-8">
             <div class="jumbotron">
               <H1>Join Woodstock.</H1>
               <H4>Make awesome music.</H4>
+              @if(message.length() > 0) {
+                <div class="alert alert-danger" role="alert" id="errormsg">
+                  <b>@message.toString()</b>
+                </div>
+              }
             </div>
         </div>
       </div>

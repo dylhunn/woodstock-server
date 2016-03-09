@@ -1,6 +1,6 @@
 package controllers;
 
-import play.*;
+import model.UserAccountManager;
 import play.data.Form;
 import play.libs.Json;
 import play.mvc.*;
@@ -10,14 +10,17 @@ import play.twirl.api.Content;
 import views.html.*;
 
 import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+
+import static play.data.Form.form;
 
 public class Application extends Controller {
 
+    // SITE NAVIGATION METHODS
+
     public Result index() {
-        return ok(index.render("Your new application is ready."));
+        if (validSessionIsActive()) return harmonizepage();
+        else return landing();
     }
 
     public Result about() {
@@ -38,24 +41,98 @@ public class Application extends Controller {
 
     public Result contact() {
         String title = "Contact";
-        String content = "This project is maintained by Dylan D. Hunn. You can reach him by at dylhunn [at] gmail [dot] com.";
+        String content = "This project is maintained by Dylan D. Hunn. You can reach him at dylhunn [at] gmail [dot] com.";
         Content html = views.html.auxtemplate.render(title, content);
         return ok(html);
     }
 
     public Result landing() {
-        return ok(views.html.landing.render());
+        return ok(views.html.landing.render(form(Credentials.class)));
     }
 
-    public Result signin() {
-        return ok(views.html.signinpage.render());
+    public Result login(String message) {
+        if (validSessionIsActive()) return index();
+        if (message == null) message = "";
+        return ok(views.html.loginpage.render(Form.form(Credentials.class), message));
+    }
+
+    public Result logout() {
+        String user = session("user-email");
+        session().clear();
+        if (user == null) return login("You were not logged in.");
+        return login("User " + user + " has been logged out.");
     }
 
     public Result harmonizepage() {
+        if (!validSessionIsActive()) return login("Please sign in to acess this page.");
         return ok(views.html.harmonize.render());
     }
 
+    public Result testRegister() {
+        return ok();//views.html.signuppage.render(Form.form(UserData.class));
+    }
+
+    // SUBSTANTIVE LOGIC
+
+    public static class Credentials {
+        public String email;
+        public String password;
+    }
+
+    public static class UserData {
+        public String email;
+        public String password;
+        public String name;
+        public String location;
+        public String birthday;
+    }
+
+    public static String getCurrentUser() {
+        return session("user-email");
+    }
+
+    public Result loginSubmit() {
+        Form<Credentials> loginForm = form(Credentials.class).bindFromRequest();
+        if (UserAccountManager.userRegistered(loginForm.get().email)) {
+            if (UserAccountManager.authenticate(loginForm.get())) { // success
+                session("user-email", loginForm.get().email);
+                return harmonizepage();
+            } else { // Incorrect password
+                return login("Incorrect password for that email address.");
+            }
+        } else { // New user
+            session("candidate-email", loginForm.get().email);
+            session("candidate-password", loginForm.get().password);
+            session("registration-in-progress", "true");
+            return ok(views.html.signuppage.render(form(UserData.class)));
+            //return login("Sorry -- signups are still closed!");
+        }
+    }
+
+    public Result signupSubmit() {
+        if (!session("registration-in-progress").equals("true")) return index();
+        session("registration-in-progress", "false");
+        Form<UserData> suForm = form(UserData.class).bindFromRequest();
+        UserData data = suForm.get();
+        data.email = session("candidate-email");
+        data.password = session("candidate-password");
+
+        UserAccountManager.registerUser(data);
+        session("user-email", data.email);
+        return index();
+    }
+
+    /**
+     * Checks the session cookie to see if a valid username is stored there.
+     */
+    public static boolean validSessionIsActive() {
+        String email = session("user-email");
+        return UserAccountManager.userRegistered(email);
+    }
+
     public Result harmonize(String input) {
+        if (!validSessionIsActive())
+            return badRequest("No user is currently signed in. Try closing and reopening the site.");
         try {
             input = URLDecoder.decode(input, "UTF-8");
         } catch (Exception e) {
@@ -73,3 +150,5 @@ public class Application extends Controller {
         return ok(Json.toJson(result));
     }
 }
+
+
