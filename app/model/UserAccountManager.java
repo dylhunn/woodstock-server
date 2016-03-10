@@ -3,8 +3,14 @@ package model;
 import controllers.Application;
 import scala.App;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
+import play.db.*;
+
+import javax.sql.DataSource;
 
 public class UserAccountManager {
 
@@ -16,6 +22,15 @@ public class UserAccountManager {
     }
 
     public static boolean userRegistered(String email) {
+        //Connection c = DB.getConnection();
+        //try {
+        //    Statement stmt = c.createStatement();
+        //    ResultSet rs = stmt.executeQuery("SELECT a, b, c FROM Table1");
+        //    c.close();
+        //} catch (Exception e) {
+            // TODO
+          //  System.out.println(e.toString());
+        //}
         return users.keySet().contains(email);
     }
 
