@@ -85,6 +85,7 @@ public class Application extends Controller {
         public String name;
         public String location;
         public String birthday;
+        public String signupdate;
     }
 
     public static String getCurrentUser() {

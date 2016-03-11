@@ -23,7 +23,8 @@ public class UserAccountManager {
             return false;
         }
 
-        return false;
+        Application.UserData user = getUser(creds.email);
+        return (user != null && user.email == creds.email && user.password == creds.password);
     }
 
     public static boolean userRegistered(String email) {
@@ -31,20 +32,8 @@ public class UserAccountManager {
             return testUsers.keySet().contains(email);
         }
 
-        /*DataSource ds = DB.getDataSource();
-
-        Connection c = DB.getConnection();
-        PreparedStatement stmt = null;
-        try {
-            String SQL = "";
-            stmt = c.prepareStatement(SQL);
-            ResultSet rs = stmt.executeQuery();
-            stmt.close();
-            c.close();
-        } catch (SQLException e) {
-            System.out.println(e);
-        }*/
-        return false;
+        Application.UserData user = getUser(email);
+        return (user != null);
     }
 
     public static boolean registerUser(Application.UserData data) {
@@ -55,7 +44,6 @@ public class UserAccountManager {
         }
 
         DataSource ds = DB.getDataSource();
-
         Connection c = DB.getConnection();
         PreparedStatement stmt = null;
         try {
@@ -78,6 +66,33 @@ public class UserAccountManager {
             return null;
         }
 
-        return null;
+        Application.UserData result = null;
+
+        DataSource ds = DB.getDataSource();
+        Connection c = DB.getConnection();
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        try {
+            String SQL = "SELECT * FROM users WHERE email='" + email + "';";
+            stmt = c.prepareStatement(SQL);
+            rs = stmt.executeQuery();
+
+            if (!rs.next()) return null; // the cursor is moved
+            result.email = rs.getString("email");
+            result.password = rs.getString("password");
+            result.name = rs.getString("name");
+            result.location = rs.getString("location");
+            result.birthday = rs.getString("birthday");
+            result.signupdate = rs.getString("signupdate");
+
+            rs.close();
+            stmt.close();
+            c.close();
+        } catch (SQLException e) {
+            System.out.println(e);
+            return null;
+        }
+
+        return result;
     }
 }
