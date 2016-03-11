@@ -5,6 +5,7 @@ import play.api.mvc.Result;
 import scala.App;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import play.db.*;
@@ -47,8 +48,10 @@ public class UserAccountManager {
         Connection c = DB.getConnection();
         PreparedStatement stmt = null;
         try {
+            String currDate = LocalDateTime.now().toLocalDate().toString();
             String SQL = "INSERT INTO users (email,password,name,location,birthday,signupdate) " +
-                    "VALUES ('" + data.email + "','" + data.password + "','" + data.name + "','" + data.location + "','" + data.birthday + "','" + "3/11/16" + "');";
+                    "VALUES ('" + data.email + "','" + data.password + "','" + data.name + "','" + data.location + "','"
+                    + data.birthday + "','" + currDate + "');";
             stmt = c.prepareStatement(SQL);
             ResultSet rs = stmt.executeQuery();
             stmt.close();
