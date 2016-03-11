@@ -73,20 +73,20 @@ public class UserAccountManager {
 
         DataSource ds = DB.getDataSource();
         Connection c = DB.getConnection();
-        PreparedStatement stmt = null;
+        Statement stmt = null;
         ResultSet rs = null;
         try {
-            String SQL = "SELECT * FROM users WHERE email='" + email + "';";
-            stmt = c.prepareStatement(SQL);
-            rs = stmt.executeQuery();
+            String SQL = "SELECT email, password, name, location, birthday, signupdate FROM users WHERE email='" + email + "';";
+            stmt = c.createStatement();
+            rs = stmt.executeQuery(SQL);
 
             if (!rs.next()) return null; // the cursor is moved
-            result.email = rs.getString(rs.findColumn("email"));
-            result.password = rs.getString(rs.findColumn("password"));
-            result.name = rs.getString(rs.findColumn("name"));
-            result.location = rs.getString(rs.findColumn("location"));
-            result.birthday = rs.getString(rs.findColumn("birthday"));
-            result.signupdate = rs.getString(rs.findColumn("signupdate"));
+            result.email = rs.getString("email");
+            result.password = rs.getString("password");
+            result.name = rs.getString("name");
+            result.location = rs.getString("location");
+            result.birthday = rs.getString("birthday");
+            result.signupdate = rs.getString("signupdate");
 
             rs.close();
             stmt.close();
