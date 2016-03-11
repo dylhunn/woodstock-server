@@ -59,7 +59,7 @@ public class UserAccountManager {
         Connection c = DB.getConnection();
         PreparedStatement stmt = null;
         try {
-            String SQL = "INSERT INTO table_name (email,password,name,location,birthday,signupdate) " +
+            String SQL = "INSERT INTO users (email,password,name,location,birthday,signupdate) " +
                     "VALUES (" + data.email + "," + data.password + "," + data.location + "," + data.birthday + "," + "3/11/16" + ");";
             stmt = c.prepareStatement(SQL);
             ResultSet rs = stmt.executeQuery();
