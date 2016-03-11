@@ -14,17 +14,20 @@ import javax.sql.DataSource;
 
 public class UserAccountManager {
 
-    private static Map<String, Application.UserData> users = new HashMap();
+    private static final boolean usemap = true;
+    private static Map<String, Application.UserData> testUsers = new HashMap();
 
     public static boolean authenticate(Application.Credentials creds) {
-        if (userRegistered(creds.email)) return users.get(creds.email).password.equals(creds.password);
+        if (usemap) if (userRegistered(creds.email)) return testUsers.get(creds.email).password.equals(creds.password);
+        if (usemap) return false;
+
         return false;
     }
 
     public static boolean userRegistered(String email) {
         DataSource ds = DB.getDataSource();
 
-        //Connection c = DB.getConnection();
+        Connection c = DB.getConnection();
         //try {
         //    Statement stmt = c.createStatement();
         //    ResultSet rs = stmt.executeQuery("SELECT a, b, c FROM Table1");
@@ -33,17 +36,22 @@ public class UserAccountManager {
             // TODO
           //  System.out.println(e.toString());
         //}
-        return users.keySet().contains(email);
+        if (usemap) return testUsers.keySet().contains(email);
+        if (usemap) return false;
+
+        return false;
     }
 
     public static boolean registerUser(Application.UserData data) {
-        if (userRegistered(data.email)) return false;
-        users.put(data.email, data);
+        if (usemap) if (userRegistered(data.email)) return false;
+        testUsers.put(data.email, data);
+        if (usemap) return true;
+
         return true;
     }
 
     public static Application.UserData getUser(String email) {
-        if (userRegistered(email)) return users.get(email);
+        if (usemap) if (userRegistered(email)) return testUsers.get(email);
         return null;
     }
 }
