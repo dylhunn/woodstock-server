@@ -82,7 +82,7 @@ public class UserAccountManager {
 
             if (!rs.next()) return null; // the cursor is moved
             result.email = rs.getString(rs.findColumn("email"));
-            result.password = rs.getString("password"));
+            result.password = rs.getString(rs.findColumn("password"));
             result.name = rs.getString(rs.findColumn("name"));
             result.location = rs.getString(rs.findColumn("location"));
             result.birthday = rs.getString(rs.findColumn("birthday"));
