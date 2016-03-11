@@ -31,7 +31,7 @@ public class UserAccountManager {
             return testUsers.keySet().contains(email);
         }
 
-        DataSource ds = DB.getDataSource();
+        /*DataSource ds = DB.getDataSource();
 
         Connection c = DB.getConnection();
         PreparedStatement stmt = null;
@@ -43,7 +43,7 @@ public class UserAccountManager {
             c.close();
         } catch (SQLException e) {
             System.out.println(e);
-        }
+        }*/
         return false;
     }
 
