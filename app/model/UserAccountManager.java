@@ -50,7 +50,7 @@ public class UserAccountManager {
     public static boolean registerUser(Application.UserData data) {
         if (usemap) {
             if (userRegistered(data.email)) return false;
-            testUsers.put(data.email, data);
+            testUsers.put(data.email, data);;
             return true;
         }
 
@@ -60,7 +60,7 @@ public class UserAccountManager {
         PreparedStatement stmt = null;
         try {
             String SQL = "INSERT INTO users (email,password,name,location,birthday,signupdate) " +
-                    "VALUES (" + data.email + "," + data.password + "," + data.location + "," + data.birthday + "," + "3/11/16" + ");";
+                    "VALUES ('" + data.email + "','" + data.password + "','" + data.name + "','" + data.location + "','" + data.birthday + "','" + "3/11/16" + "');";
             stmt = c.prepareStatement(SQL);
             ResultSet rs = stmt.executeQuery();
             stmt.close();
