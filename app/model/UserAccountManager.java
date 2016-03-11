@@ -22,6 +22,8 @@ public class UserAccountManager {
     }
 
     public static boolean userRegistered(String email) {
+        DataSource ds = DB.getDataSource();
+
         //Connection c = DB.getConnection();
         //try {
         //    Statement stmt = c.createStatement();
