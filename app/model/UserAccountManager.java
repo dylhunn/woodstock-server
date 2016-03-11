@@ -54,7 +54,21 @@ public class UserAccountManager {
             return true;
         }
 
+        DataSource ds = DB.getDataSource();
 
+        Connection c = DB.getConnection();
+        PreparedStatement stmt = null;
+        try {
+            String SQL = "INSERT INTO table_name (email,password,name,location,birthday,signupdate) " +
+                    "VALUES (" + data.email + "," + data.password + "," + data.location + "," + data.birthday + "," + "3/11/16" + ");";
+            stmt = c.prepareStatement(SQL);
+            ResultSet rs = stmt.executeQuery();
+            stmt.close();
+            c.close();
+        } catch (SQLException e) {
+            System.out.println(e);
+            return false;
+        }
         return true;
     }
 
