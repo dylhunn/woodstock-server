@@ -14,7 +14,7 @@ import javax.sql.DataSource;
 
 public class UserAccountManager {
 
-    private static final boolean usemap = true;
+    private static final boolean usemap = false;
     private static Map<String, Application.UserData> testUsers = new HashMap();
 
     public static boolean authenticate(Application.Credentials creds) {
@@ -25,9 +25,7 @@ public class UserAccountManager {
     }
 
     public static boolean userRegistered(String email) {
-        DataSource ds = DB.getDataSource();
 
-        Connection c = DB.getConnection();
         //try {
         //    Statement stmt = c.createStatement();
         //    ResultSet rs = stmt.executeQuery("SELECT a, b, c FROM Table1");
@@ -38,6 +36,15 @@ public class UserAccountManager {
         //}
         if (usemap) return testUsers.keySet().contains(email);
         if (usemap) return false;
+
+        DataSource ds = DB.getDataSource();
+
+        Connection c = DB.getConnection();
+        try {
+            c.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
 
         return false;
     }
