@@ -81,12 +81,12 @@ public class UserAccountManager {
             rs = stmt.executeQuery();
 
             if (!rs.next()) return null; // the cursor is moved
-            result.email = rs.getString("email");
-            result.password = rs.getString("password");
-            result.name = rs.getString("name");
-            result.location = rs.getString("location");
-            result.birthday = rs.getString("birthday");
-            result.signupdate = rs.getString("signupdate");
+            result.email = rs.getString(rs.findColumn("email"));
+            result.password = rs.getString("password"));
+            result.name = rs.getString(rs.findColumn("name"));
+            result.location = rs.getString(rs.findColumn("location"));
+            result.birthday = rs.getString(rs.findColumn("birthday"));
+            result.signupdate = rs.getString(rs.findColumn("signupdate"));
 
             rs.close();
             stmt.close();
