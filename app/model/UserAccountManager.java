@@ -78,7 +78,12 @@ public class UserAccountManager {
         try {
             String SQL = "SELECT email, password, name, location, birthday, signupdate FROM users WHERE email='" + email + "';";
             stmt = c.createStatement();
+
             rs = stmt.executeQuery(SQL);
+            if (rs == null) {
+                System.out.println("rs is null");
+                return null;
+            }
 
             if (!rs.next()) return null; // the cursor is moved
             result.email = rs.getString(1);
