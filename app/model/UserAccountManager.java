@@ -25,7 +25,7 @@ public class UserAccountManager {
         }
 
         Application.UserData user = getUser(creds.email);
-        return (user != null && user.email == creds.email && user.password == creds.password);
+        return (user != null && user.email.equals(creds.email) && user.password.equals(creds.password));
     }
 
     public static boolean userRegistered(String email) {
