@@ -69,7 +69,7 @@ public class UserAccountManager {
             return null;
         }
 
-        Application.UserData result = null;
+        Application.UserData result = new Application.UserData();
 
         DataSource ds = DB.getDataSource();
         Connection c = DB.getConnection();
@@ -82,8 +82,7 @@ public class UserAccountManager {
             rs = stmt.executeQuery(SQL);
 
             if (!rs.next()) return null; // the cursor is moved
-            String o = rs.getString(1);
-            result.email = o;
+            result.email = rs.getString(1);
             result.password = rs.getString(2);
             result.name = rs.getString(3);
             result.location = rs.getString(4);
