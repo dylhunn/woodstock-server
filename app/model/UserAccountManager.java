@@ -80,13 +80,10 @@ public class UserAccountManager {
             stmt = c.createStatement();
 
             rs = stmt.executeQuery(SQL);
-            if (rs == null) {
-                System.out.println("rs is null");
-                return null;
-            }
 
             if (!rs.next()) return null; // the cursor is moved
-            result.email = rs.getString(1);
+            String o = rs.getString(1);
+            result.email = o;
             result.password = rs.getString(2);
             result.name = rs.getString(3);
             result.location = rs.getString(4);
