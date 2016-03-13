@@ -99,4 +99,27 @@ public class UserAccountManager {
 
         return result;
     }
+
+    public static boolean writeLog(String email, String type, String request, String result, Boolean success) {
+        if (usemap) { // no logging offline yet
+            return false;
+        }
+
+        DataSource ds = DB.getDataSource();
+        Connection c = DB.getConnection();
+        PreparedStatement stmt = null;
+        try {
+            String currDate = LocalDateTime.now().toString();
+            String SQL = "INSERT INTO logs (email,type,request,datetime,result) " +
+                    "VALUES ('" + email + "','" + type + "','" + request + "','" + currDate + "','" + result + "','" + success.toString() + "');";
+            stmt = c.prepareStatement(SQL);
+            ResultSet rs = stmt.executeQuery();
+            stmt.close();
+            c.close();
+        } catch (SQLException e) {
+            System.out.println(e);
+            return false;
+        }
+        return true;
+    }
 }

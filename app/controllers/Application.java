@@ -132,11 +132,13 @@ public class Application extends Controller {
     }
 
     public Result harmonize(String input) {
+        String email = session("user-email");
         if (!validSessionIsActive())
             return badRequest("No user is currently signed in. Try closing and reopening the site.");
         try {
             input = URLDecoder.decode(input, "UTF-8");
         } catch (Exception e) {
+            UserAccountManager.writeLog(email, "harmonize", input, e.getMessage(), false);
             return badRequest("The server received an unsupported URL encoding.");
         }
         List<String> inputChords = Arrays.asList(input.split(" "));
@@ -146,8 +148,10 @@ public class Application extends Controller {
         try {
             result = Harmonizer.harmonize(str);
         } catch (Exception e) { // Harmonizing failed for some reason
+            UserAccountManager.writeLog(email, "harmonize", input, e.getMessage(), false);
             return badRequest(e.getMessage());
         }
+        UserAccountManager.writeLog(email, "harmonize", input, Json.toJson(result).toString(), true);
         return ok(Json.toJson(result));
     }
 }
