@@ -50,8 +50,8 @@ public class UserAccountManager {
         boolean success = false;
         PreparedStatement stmt = null;
         try {
-            stmt = c.prepareStatement("INSERT INTO users (email,password,name,location,birthday,signupdate) " +
-                    "VALUES (?,?,?,?,?,?);");
+            stmt = c.prepareStatement("INSERT INTO users (email,password,name,location,birthday,signupdate, verified) " +
+                    "VALUES (?,?,?,?,?,?, ?);");
 
             String currDate = LocalDateTime.now(ZoneId.of("America/Los_Angeles")).toString();
 
@@ -61,6 +61,7 @@ public class UserAccountManager {
             stmt.setString(4,data.location);
             stmt.setString(5,data.birthday);
             stmt.setString(6,currDate);
+            stmt.setString(7,"false");
 
             success = stmt.execute();
             stmt.close();
