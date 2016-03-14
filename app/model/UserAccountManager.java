@@ -113,8 +113,9 @@ public class UserAccountManager {
 
         DataSource ds = DB.getDataSource();
         Connection c = DB.getConnection();
-        String SQL = String SQL = "INSERT INTO logs (email,type,request,datetime,result,success) " +
+        String SQL = "INSERT INTO logs (email,type,request,datetime,result,success) " +
                 "VALUES (?, ?, ?, ?, ?, ?);";
+        PreparedStatement stmt = null;
 
         try {
             String currDate = LocalDateTime.now().toString();
