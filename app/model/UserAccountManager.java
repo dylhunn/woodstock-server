@@ -6,6 +6,7 @@ import scala.App;
 
 import java.sql.*;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.Map;
 import play.db.*;
@@ -46,21 +47,36 @@ public class UserAccountManager {
 
         DataSource ds = DB.getDataSource();
         Connection c = DB.getConnection();
+        boolean success = false;
         PreparedStatement stmt = null;
         try {
-            String currDate = LocalDateTime.now().toLocalDate().toString();
-            String SQL = "INSERT INTO users (email,password,name,location,birthday,signupdate) " +
-                    "VALUES ('" + data.email + "','" + data.password + "','" + data.name + "','" + data.location + "','"
-                    + data.birthday + "','" + currDate + "');";
-            stmt = c.prepareStatement(SQL);
-            ResultSet rs = stmt.executeQuery();
+            stmt = c.prepareStatement("INSERT INTO users (email,password,name,location,birthday,signupdate) " +
+                    "VALUES (?,?,?,?,?,?);");
+
+            String currDate = LocalDateTime.now(ZoneId.of("America/Los_Angeles")).toString();
+
+            stmt.setString(1,data.email);
+            stmt.setString(2,data.password);
+            stmt.setString(3,data.name);
+            stmt.setString(4,data.location);
+            stmt.setString(5,data.birthday);
+            stmt.setString(6,data.signupdate);
+
+            success = stmt.execute();
             stmt.close();
             c.close();
         } catch (SQLException e) {
             System.out.println(e);
             return false;
+        } finally {
+            try {
+                if (stmt != null) stmt.close();
+                if (c != null) c.close();
+            } catch (Exception e) {
+
+            }
         }
-        return true;
+        return success;
     }
 
     public static Application.UserData getUser(String email) {
@@ -110,6 +126,7 @@ public class UserAccountManager {
         if (usemap) { // no logging offline yet
             return false;
         }
+        boolean reqsuccess = false;
 
         DataSource ds = DB.getDataSource();
         Connection c = DB.getConnection();
@@ -118,15 +135,15 @@ public class UserAccountManager {
         PreparedStatement stmt = null;
 
         try {
-            String currDate = LocalDateTime.now().toString();
-            PreparedStatement stmt = c.prepareStatement(SQL);
+            String currDate = LocalDateTime.now(ZoneId.of("America/Los_Angeles")).toString();
+            stmt = c.prepareStatement(SQL);
             stmt.setString(1, email);
             stmt.setString(2, type);
             stmt.setString(3, request);
             stmt.setString(4, currDate);
             stmt.setString(5, result);
             stmt.setString(6, success.toString());
-            stmt.execute();
+            reqsuccess = stmt.execute();
         } catch (SQLException e) {
             System.out.println(e);
             return false;
@@ -138,6 +155,6 @@ public class UserAccountManager {
 
              }
          }
-        return true;
+        return reqsuccess;
     }
 }
