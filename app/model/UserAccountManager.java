@@ -110,7 +110,7 @@ public class UserAccountManager {
         PreparedStatement stmt = null;
         try {
             String currDate = LocalDateTime.now().toString();
-            String SQL = "INSERT INTO logs (email,type,request,datetime,result) " +
+            String SQL = "INSERT INTO logs (email,type,request,datetime,result,success) " +
                     "VALUES ('" + email + "','" + type + "','" + request + "','" + currDate + "','" + result + "','" + success.toString() + "');";
             stmt = c.prepareStatement(SQL);
             ResultSet rs = stmt.executeQuery();
