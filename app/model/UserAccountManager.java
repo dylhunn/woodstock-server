@@ -60,20 +60,20 @@ public class UserAccountManager {
             stmt.setString(3,data.name);
             stmt.setString(4,data.location);
             stmt.setString(5,data.birthday);
-            stmt.setString(6,data.signupdate);
+            stmt.setString(6,currDate);
 
             success = stmt.execute();
             stmt.close();
             c.close();
         } catch (SQLException e) {
-            System.out.println(e);
+            writeLog(data.email, "registerUser", data.toString(), e.getMessage(), false);
             return false;
         } finally {
             try {
                 if (stmt != null) stmt.close();
                 if (c != null) c.close();
             } catch (Exception e) {
-
+                writeLog(data.email, "registerUser", data.toString(), e.getMessage(), false);
             }
         }
         return success;
@@ -107,7 +107,7 @@ public class UserAccountManager {
 
 
         } catch (SQLException e) {
-            System.out.println(e);
+            writeLog(email, "getUser", "", e.getMessage(), false);
             return null;
         } finally {
             try {
@@ -115,7 +115,7 @@ public class UserAccountManager {
                 if (stmt != null) stmt.close();
                 if (c != null) c.close();
             } catch (Exception e) {
-
+                writeLog(email, "getUser", "", e.getMessage(), false);
             }
         }
 
@@ -152,8 +152,8 @@ public class UserAccountManager {
                 if (stmt != null) stmt.close();
                 if (c != null) c.close();
              } catch (Exception e) {
-
-             }
+                System.out.println(e);
+            }
          }
         return reqsuccess;
     }
