@@ -25,9 +25,7 @@
 
         <div class="container">
             <div class="jumbotron" id="musicdiv" style="display:none";>
-                <b><p id="chordText">
-
-                </p></b>
+                <div class="alert alert-info" role="alert" id="chordText"></div>
                 <canvas width=1 height=1 id="musiccanvas"></canvas>
             </div>
 
@@ -42,7 +40,6 @@
                             <th>Request</th>
                             <th>Time</th>
                             <th>Result</th>
-                            <th>Success</th>
                         </tr>
                         @for(a <- 0 to loglist.size()-1){
                             <tr>
@@ -50,11 +47,11 @@
                                 <td>@loglist.get(a).request</td>
                                 <td>@loglist.get(a).currDate</td>
                                 @if(loglist.get(a).success.equals("true")) {
-                                    <td><a onclick="drawChords(@{loglist.get(a).result}); $('#toptitle').text(@{loglist.get(a).request});">@{loglist.get(a).result}</a></td>
+                                    <td><a onclick="drawChords(@{loglist.get(a).result});
+                                    $('#chordText').text('@{loglist.get(a).request}');">@{loglist.get(a).result}</a></td>
                                 }else {
                                     <td>@loglist.get(a).result</td>
                                 }
-                                <td>@loglist.get(a).success</td>
                             </tr>
                         }
 
