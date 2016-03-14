@@ -50,7 +50,7 @@
                                 <td>@loglist.get(a).request</td>
                                 <td>@loglist.get(a).currDate</td>
                                 @if(loglist.get(a).success.equals("true")) {
-                                    <td><a onclick="drawChords(@loglist.get(a).result); $('#toptitle').text(@loglist.get(a).request)">@loglist.get(a).result</a></td>
+                                    <td><a onclick="drawChords(@{loglist.get(a).result}); $('#toptitle').text(@{loglist.get(a).request});">@{loglist.get(a).result}</a></td>
                                 }else {
                                     <td>@loglist.get(a).result</td>
                                 }
