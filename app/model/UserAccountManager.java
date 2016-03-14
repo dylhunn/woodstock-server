@@ -73,13 +73,13 @@ public class UserAccountManager {
 
         DataSource ds = DB.getDataSource();
         Connection c = DB.getConnection();
-        Statement stmt = null;
+        PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
-            String SQL = "SELECT email, password, name, location, birthday, signupdate FROM users WHERE email='" + email + "';";
-            stmt = c.createStatement();
-
-            rs = stmt.executeQuery(SQL);
+            String SQL = "SELECT email, password, name, location, birthday, signupdate FROM users WHERE email = ?;";
+            stmt = c.prepareStatement(SQL);
+            stmt.setString(1, email);
+            rs = stmt.executeQuery();
 
             if (!rs.next()) return null; // the cursor is moved
             result.email = rs.getString(1);
@@ -89,12 +89,18 @@ public class UserAccountManager {
             result.birthday = rs.getString(5);
             result.signupdate = rs.getString(6);
 
-            rs.close();
-            stmt.close();
-            c.close();
+
         } catch (SQLException e) {
             System.out.println(e);
             return null;
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (stmt != null) stmt.close();
+                if (c != null) c.close();
+            } catch (Exception e) {
+
+            }
         }
 
         return result;
@@ -107,19 +113,30 @@ public class UserAccountManager {
 
         DataSource ds = DB.getDataSource();
         Connection c = DB.getConnection();
-        PreparedStatement stmt = null;
+        String SQL = String SQL = "INSERT INTO logs (email,type,request,datetime,result,success) " +
+                "VALUES (?, ?, ?, ?, ?, ?);";
+
         try {
             String currDate = LocalDateTime.now().toString();
-            String SQL = "INSERT INTO logs (email,type,request,datetime,result,success) " +
-                    "VALUES ('" + email + "','" + type + "','" + request + "','" + currDate + "','" + result + "','" + success.toString() + "');";
-            stmt = c.prepareStatement(SQL);
-            ResultSet rs = stmt.executeQuery();
-            stmt.close();
-            c.close();
+            PreparedStatement stmt = c.prepareStatement(SQL);
+            stmt.setString(1, email);
+            stmt.setString(2, type);
+            stmt.setString(3, request);
+            stmt.setString(4, currDate);
+            stmt.setString(5, result);
+            stmt.setString(6, success.toString());
+            stmt.execute();
         } catch (SQLException e) {
             System.out.println(e);
             return false;
-        }
+        } finally {
+            try {
+                if (stmt != null) stmt.close();
+                if (c != null) c.close();
+             } catch (Exception e) {
+
+             }
+         }
         return true;
     }
 }
