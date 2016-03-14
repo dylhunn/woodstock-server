@@ -18,5 +18,7 @@ POST    /signup                     controllers.Application.signupSubmit()
 
 GET     /logout                     controllers.Application.logout()
 
+GET     /admin                     controllers.Application.admin()
+
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

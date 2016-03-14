@@ -1,13 +1,13 @@
 package model;
 
 import controllers.Application;
-import play.api.mvc.Result;
-import scala.App;
 
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import play.db.*;
 
@@ -16,11 +16,12 @@ import javax.sql.DataSource;
 public class UserAccountManager {
 
     // for offline testing purposes
-    private static final boolean usemap = false;
-    private static Map<String, Application.UserData> testUsers = new HashMap();
+    private static final boolean noDatabase = false;
+    private static Map<String, Application.UserData> testUsers = new HashMap<>();
+    private static ArrayList<LogEntry> log = new ArrayList<>();
 
     public static boolean authenticate(Application.Credentials creds) {
-        if (usemap) {
+        if (noDatabase) {
             if (userRegistered(creds.email)) return testUsers.get(creds.email).password.equals(creds.password);
             return false;
         }
@@ -29,8 +30,12 @@ public class UserAccountManager {
         return (user != null && user.email.equals(creds.email) && user.password.equals(creds.password));
     }
 
+    public static boolean isAdmin(String email) {
+        return (email.equals("dylhunn@gmail.com"));
+    }
+
     public static boolean userRegistered(String email) {
-        if (usemap) {
+        if (noDatabase) {
             return testUsers.keySet().contains(email);
         }
 
@@ -39,9 +44,9 @@ public class UserAccountManager {
     }
 
     public static boolean registerUser(Application.UserData data) {
-        if (usemap) {
+        if (noDatabase) {
             if (userRegistered(data.email)) return false;
-            testUsers.put(data.email, data);;
+            testUsers.put(data.email, data);
             return true;
         }
 
@@ -81,7 +86,7 @@ public class UserAccountManager {
     }
 
     public static Application.UserData getUser(String email) {
-        if (usemap) {
+        if (noDatabase) {
             if (userRegistered(email)) return testUsers.get(email);
             return null;
         }
@@ -124,8 +129,11 @@ public class UserAccountManager {
     }
 
     public static boolean writeLog(String email, String type, String request, String result, Boolean success) {
-        if (usemap) { // no logging offline yet
-            return false;
+        String currDate = LocalDateTime.now(ZoneId.of("America/Los_Angeles")).toString();
+
+        if (noDatabase) { // no logging offline yet
+            log.add(new LogEntry(email, type, request, currDate, result, success.toString()));
+            return true;
         }
         boolean reqsuccess = false;
 
@@ -136,7 +144,6 @@ public class UserAccountManager {
         PreparedStatement stmt = null;
 
         try {
-            String currDate = LocalDateTime.now(ZoneId.of("America/Los_Angeles")).toString();
             stmt = c.prepareStatement(SQL);
             stmt.setString(1, email);
             stmt.setString(2, type);
@@ -157,5 +164,54 @@ public class UserAccountManager {
             }
          }
         return reqsuccess;
+    }
+
+    public static List<LogEntry> getLogs() {
+        if (noDatabase) {
+            return log;
+        }
+        List<LogEntry> res = new ArrayList<>();
+
+        DataSource ds = DB.getDataSource();
+        Connection c = DB.getConnection();
+        String SQL = "SELECT * FROM logs";
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+
+        try {
+            stmt = c.prepareStatement(SQL);
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                res.add(new LogEntry(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6)));
+            }
+        } catch (SQLException e) {
+            return res;
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (stmt != null) stmt.close();
+                if (c != null) c.close();
+            } catch (Exception e) {
+                return res;
+            }
+        }
+        return res;
+    }
+
+    public static class LogEntry {
+        public LogEntry(String email, String type, String request, String currDate, String result, String success) {
+            this.email=email;
+            this.type=type;
+            this.request=request;
+            this.currDate=currDate;
+            this.result=result;
+            this.success=success;
+        }
+        public String email;
+        public String type;
+        public String request;
+        public String currDate;
+        public String result;
+        public String success;
     }
 }

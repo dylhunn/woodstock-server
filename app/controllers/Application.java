@@ -16,6 +16,9 @@ import static play.data.Form.form;
 
 public class Application extends Controller {
 
+    // use for offline debugging
+    private boolean overrideAdminSecurity = false;
+
     // SITE NAVIGATION METHODS
 
     public Result index() {
@@ -66,6 +69,15 @@ public class Application extends Controller {
     public Result harmonizepage() {
         if (!validSessionIsActive()) return login("Please sign in to acess this page.");
         return ok(views.html.harmonize.render());
+    }
+
+    public Result admin() {
+        if (!overrideAdminSecurity && !validSessionIsActive()) return login("Please sign in to acess this page.");
+        if (!overrideAdminSecurity && !UserAccountManager.isAdmin(session("user-email"))) {
+            return ok(auxtemplate.render("", "You don't have permission to access this page."));
+        }
+        List<UserAccountManager.LogEntry> logs = UserAccountManager.getLogs();
+        return ok(views.html.admin.render(logs));
     }
 
     public Result testRegister() {

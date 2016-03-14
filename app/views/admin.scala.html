@@ -1,0 +1,75 @@
+@import model.UserAccountManager.LogEntry
+@(loglist: java.util.List[LogEntry])
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+            <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <link rel="icon" href="favicon.ico">
+
+        <title>Woodstock Log Interface</title>
+
+            <!-- Bootstrap core CSS -->
+        <link href="assets/bootstrap/css/bootstrap-themed.min.css" rel="stylesheet">
+    </head>
+
+    <body onresize=>
+            <!-- Fixed navbar -->
+        @navbar.render()
+
+
+        <div class="container">
+            <div class="jumbotron" id="musicdiv" style="display:none";>
+                <canvas width=1 height=1 id="musiccanvas"></canvas>
+            </div>
+
+            <div class="jumbotron" id="logsdiv">
+                <h1>Admin tools</h1>
+                <div class="panel panel-default">
+                    <div class="panel-heading">Harmony request logs</div>
+                    <table class="table">
+
+                        <tr>
+                            <th>User</th>
+                            <th>Request</th>
+                            <th>Time</th>
+                            <th>Result</th>
+                            <th>Success</th>
+                        </tr>
+                        @for(a <- 0 to loglist.size()-1){
+                            <tr>
+                                <td>@loglist.get(a).email</td>
+                                <td>@loglist.get(a).request</td>
+                                <td>@loglist.get(a).currDate</td>
+                                @if(loglist.get(a).success.equals("true")) {
+                                    <td><a onclick="drawChords(@loglist.get(a).result)">@loglist.get(a).result</a></td>
+                                }else {
+                                    <td>@loglist.get(a).result</td>
+                                }
+                                <td>@loglist.get(a).success</td>
+                            </tr>
+                        }
+
+                    </table>
+                </div>
+
+            </div>
+        </div>
+
+            <!-- Bootstrap core JavaScript
+    ================================================== -->
+            <!-- Placed at the end of the document so the pages load faster -->
+            <!--script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.4/raphael-min.js"></script-->
+        <script src="assets/jquery/jquery.min.js"></script>
+        <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+        <script src="assets/vexflow/vexflow-min.js"></script>
+        <script src="assets/javascripts/music.js"></script>
+        <script src="assets/javascripts/resize_debounce.js"></script>
+
+    </body>
+</html>

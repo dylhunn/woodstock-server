@@ -82,6 +82,15 @@ function completeHarmonyRequest() {
   //}
 }
 
+// accepts json formatted chords
+function drawChords(parsedChords) {
+  chords = parsedChords; // Cache the data
+  var melodies = transformFromChordsToMelodies(parsedChords)
+  staveNotes = generateStaveNotes(melodies[0], melodies[1], melodies[2], melodies[3]);
+  showMusicArea();
+  drawMusic();
+}
+
 // Accept an array of arrays, each of which lists chord tones. Outer array is ordered. Inner array is SATB.
 // Return an array of arrays, each of which lists voice tones, in order. Outer array is SATB.
 function transformFromChordsToMelodies(progression) {
